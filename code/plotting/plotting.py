@@ -17,17 +17,18 @@ clusters = [
   ('aquamarine', 'v', 10),
 ]
 
-def plot_tsne_2d(data, labels, title='', size=(12, 12), returns='plot'):
+def plot_tsne_2d(data, labels, title='', size=(12, 12), state=None, returns='plot'):
   '''
   data:     n x m matrix of data (n observations, m features)
   labels:   label array for all observations
   title:    title for the plot (default '')
   size:     size-tuple for the plot (width, height) in inches (default (12,12))
+  state:    random initialization (default None)
   returns:  'plot' returns nothing and just plots
             'fig' returns figure object
   '''
 
-  data_projected_2d = TSNE(n_components=2).fit_transform(data)
+  data_projected_2d = TSNE(n_components=2, random_state=state).fit_transform(data)
 
   labeled_data = np.c_[data_projected_2d, labels]
 

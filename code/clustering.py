@@ -15,7 +15,7 @@ plot_data_3d(
     seeds_labeled[:, :-1], 
     seeds_labeled[:, -1], 
     features=[0, 1, 2], 
-    feature_names=['area', 'lenght', 'width'], 
+    feature_names=['area', 'perimeter', 'compactness'], 
     title='Seeds', 
     size=(8, 8), 
     azimuth=100 , 
@@ -23,4 +23,4 @@ plot_data_3d(
     returns='plot'
   )
 
-plot_tsne_2d(seeds_labeled[:, :-1], seeds_labeled[:, -1], title='Seeds')
+plot_tsne_2d(seeds_labeled[:, :-1], seeds_labeled[:, -1], title='Seeds', state=0)
