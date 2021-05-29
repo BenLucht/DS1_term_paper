@@ -1,6 +1,9 @@
+# pylint: disable=F0401
+
 import pandas as pd
 from kmeans.kmeans import cluster_kmeans
 from plotting.plotting import plot_tsne_2d, plot_data_3d
+from evaluation.evaluation import get_indices
 
 seeds = pd.read_csv('../data/seeds_dataset.txt',
                     sep='\t', 
@@ -24,3 +27,5 @@ plot_data_3d(
   )
 
 plot_tsne_2d(seeds_labeled[:, :-1], seeds_labeled[:, -1], title='Seeds', state=0)
+
+print(get_indices(seeds_labeled[:, :-1], seeds_labeled[:, -1]))
