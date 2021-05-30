@@ -1,0 +1,67 @@
+\documentclass[12pt]%[english]
+{article}
+
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage[nonumberlist, acronym, toc, section]{glossaries}
+\usepackage{cite} 
+
+\input{glossary}
+
+\begin{document}
+
+\begin{titlepage}
+\input{titlepage}
+\end{titlepage}
+
+\newpage\thispagestyle{empty}~ %empty page
+\newpage 
+
+\begin{abstract}
+\input{sections/00_abstract}
+\end{abstract}
+
+\newpage
+
+\tableofcontents
+
+\newpage
+
+\section{Problem Description}
+\input{sections/01_problem_description}
+
+\section{Description of Specific Methods and Algorithms}
+\input{sections/02_method_descriptions/index}
+
+\section{Data Set Description}
+\input{sections/03_data_set_descriptions/index}
+
+\section{Description of Python libraries used}
+\input{sections/04_python_library_description}
+
+\section{Description of Evaluation Module}
+\input{sections/05_evaluation_module}
+
+\section{Web Frontend and User Manual}
+\input{sections/06_frontend_manual}
+
+\section{Conclusion}
+\input{sections/07_conclusion}
+
+\newpage
+
+%print glossary
+\printglossary[style=altlist,title=Glossary]
+ 
+%print abbreviations
+\printglossary[type=\acronymtype,style=long]
+ 
+%print symbols
+\printglossary[type=symbolslist,style=long]
+
+\newpage
+
+\bibliography{bib}
+\bibliographystyle{unsrt}
+
+\end{document}
