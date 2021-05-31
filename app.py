@@ -2,21 +2,18 @@
 # pylint: disable=F0401
 # disables pylint errors for no name in module and unable to import
 
-import sys, os
-sys.path.insert(0, os.path.abspath('..'))
-
 import streamlit as st
 import pandas as pd
 from code.kmeans.kmeans import cluster_kmeans
 from code.plotting.plotting import plot_tsne_2d
 
 # LOAD DATA
-seeds = pd.read_csv('../data/seeds_dataset.txt', 
+seeds = pd.read_csv('data/seeds_dataset.txt', 
                     sep='\t', 
                     names=['area', 'perimeter', 'compactness', 'length', 'width', 'asymmetry_coeff', 'length_groove', 'label']
                    )
 
-customers = pd.read_csv('../data/Mall_Customers.csv')
+customers = pd.read_csv('data/Mall_Customers.csv')
 customers.columns = ['id', 'gender', 'age', 'income', 'spending_score']
 
 # CONTROLS
@@ -55,7 +52,7 @@ if option == 'k-means':
 
       kmeans_labels = cluster_kmeans(X, n, state=0)
 
-      clusters_plot = plot_tsne_2d(X, kmeans_labels, title='', size=(12, 12), state=None, returns='fig')
+      clusters_plot = plot_tsne_2d(X, kmeans_labels, title='', size=(12, 12), state=0, returns='fig')
 
       with st.spinner('Plotting data ...'):
           st.pyplot(clusters_plot)
