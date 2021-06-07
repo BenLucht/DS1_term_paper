@@ -6,6 +6,29 @@
 \usepackage[nonumberlist, acronym, toc, section]{glossaries}
 \usepackage{cite} 
 
+
+%% additional packages and commands
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+% to format pseudo code
+\usepackage{algorithm}% http://ctan.org/pkg/algorithms
+\usepackage{algpseudocode}% http://ctan.org/pkg/algorithmicx
+
+% make numbers in circles: https://tex.stackexchange.com/questions/7032/good-way-to-make-textcircled-numbers
+\usepackage{tikz}
+\newcommand*\circled[1]{\tikz[baseline=(char.base)]{
+            \node[shape=circle,draw,inner sep=1pt] (char) {#1};}}
+% alternative to that: \raisebox{.5pt}{\textcircled{\raisebox{-.9pt} {8}}}
+
+\usepackage{pdfpages} % to embed pdfs
+\usepackage{multicol}
+
+% for code snippets
+\usepackage{minted}
+\usepackage{xcolor}
+\definecolor{code-bg}{rgb}{0.95,0.95,0.95}
+
 \input{glossary}
 
 \begin{document}
@@ -28,21 +51,27 @@
 \newpage
 
 \section{Problem Description}
+\label{sec:problem_description}
 \input{sections/01_problem_description}
 
 \section{Description of Specific Methods and Algorithms}
+\label{sec:method_descriptions}
 \input{sections/02_method_descriptions/index}
 
 \section{Data Set Description}
+\label{sec:data_description}
 \input{sections/03_data_set_descriptions/index}
 
 \section{Description of Python libraries used}
-\input{sections/04_python_library_description}
+\label{sec:python_description}
+\input{sections/04_python_library_description/index}
 
 \section{Description of Evaluation Module}
+\label{sec:evaluation_description}
 \input{sections/05_evaluation_module}
 
 \section{Web Frontend and User Manual}
+\label{sec:frontend_description}
 \input{sections/06_frontend_manual}
 
 \section{Conclusion}

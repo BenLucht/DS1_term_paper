@@ -1,0 +1,14 @@
+\subsection{Scikit-Learn KMeans}
+
+For K-Means clustering we use the implementation provided from \cite{sklearn_api} in version 0.24.2 which is the latest stable release as of \today. 
+
+One of the parameters of this function is the choice of algorithm used for the optimization: \mintinline[bgcolor=code-bg]{python}{full} provides the option to run a method mimicking \cite{lloyd1982least} described exhaustively in section \ref{subsec:method_kmeans}, while \mintinline[bgcolor=code-bg]{python}{elkan} has become the default which uses a more efficient algorithm described by \cite{elkan2003using} to improve run time. This method takes advantage of the triangle inequality in multiple ways, most prominently by reducing the number of distance calculations for each iteration. After updating, distances between centroids are calculated. Then, starting with the previously assigned centroid, distances from observations to centroids are calculated. In the \mintinline[bgcolor=code-bg]{python}{full} case, this would be done for all observations with all centroids. With the \mintinline[bgcolor=code-bg]{python}{elkan}, thanks to triangle inequality, the algorithm knows it is not necessary to perform more distance calculations for a particular observation if its distance to the current centroid is below half the distance between the centroid and next closest centroid.
+
+Another option is to specify how to initialize the algorithm. It is possible to specify \mintinline[bgcolor=code-bg]{python}{random} which selects random observations from the data, to provide a list of starting positions, a custom function, or to use the default which is \mintinline[bgcolor=code-bg]{python}{kmeans++} as described in section \ref{subsec:method_kmeans}.
+
+Stopping condition for the algorithm is movement of centroids below a certain threshold, as described in section \ref{subsec:method_kmeans}, determined by calculation of the Frobenius norm of the difference in position of centroids  of two consecutive iterations. The threshold can be set as a parameter. There is also the possibility to specify how many runs with new initializations shall be run as well as a maximum number of iterations per run.
+
+% \begin{minted}{python}
+% from sklearn.cluster import KMeans
+% import numpy as np
+% \end{minted}
