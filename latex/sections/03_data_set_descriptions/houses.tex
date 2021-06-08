@@ -1,0 +1,18 @@
+\subsection{Boston House Pricing Data}
+\textit{written by L.B.}\\
+
+The Boston House Pricing Dataset was originally published in 1978 by Harrison and Rubinfeld \cite{hedonichousepricing}. In their study the authors used the dataset to investigate how people's willingness to pay for clean air is correlated to different measurements of house data around the area of Boston.
+In total, 506 samples are included within the dataset, containing fourteen different attribute columns. Six of those attribute values originate from the U.S. Census Service, the remaining originate amongst others from the FBI, the Metropolitan Area Planning Commission, the Massachusetts Taxpayers Foundation, the Massachusetts Department of Education and the MIT Boston project. All data was sampled in 1970. The attributes of each data can be separated into different types, providing information on structure, neighborhood, accessibility or air pollution.
+
+Structural attributes yield information on the state of the house in terms of year of construction or spaciousness. While the \textit{RM} variable holds the numeric value for the average number of rooms, the \textit{AGE} attribute describes the proportion of houses that were built before 1940. Both values are assumed to have a positive correlation on housing values since owning more rooms or owning houses with modern structures is perceived as increasing life quality. 
+
+Neighborhood attributes hold details about the socioeconomic status of the environment. This includes the fraction of colored people in the whole population as well as the \textit{LSTAT} attribute, which denotes the amount of people being of a lower educational status. In addition to that, crime rate is included for neighborhoods of the Boston area. The latter attribute is supposed to have a negative effect on housing values as crime rate influences people's level of danger. 
+Another neighborhood attribute stands for the sum of square feet available for residential zoning where constructing buildings like factories is prohibited. Next, the \textit{INDUS} attribute comprises the proportion of industry which comes along with noise, traffic and dirt and is therefore negatively correlated with housing values. Moreover, property tax rate as well as the ratio between pupils and teachers are included. The last socioeconomic attribute classifies whether the respective city area adjoins Charles River.
+
+Accessibility attributes characterize the infrastructure measured by closeness to employment centers and to radial highways. 
+
+In order to estimate air quality, the concentration of Nitrogen Oxid in parts per hundred million is measured. 
+
+The last attribute is the dependent variable which describes the median value of houses that are occupied by private owners. 
+
+While the index of highway accessibility is an integer value and the closeness to Charles River is measured using a boolean variable, all the other attributes are float numbers. The dataset does not contain any empty columns, thus no elimination or preprocessing of the available data is necessary.

@@ -1,4 +1,6 @@
 \subsection{K-Means}
+\textit{written by B.L.}\\
+
 \label{subsec:method_kmeans}
 On the surface, the idea for K-Means clustering is straight forward: an initial grouping of observations closest to starting points whereafter the starting points are updated to be placed at the center of these groupings. A new grouping step is performed and centers updated until the groupings do not change any further \cite{wiedenbeck2001klassifikation, fahrmeir2015multivariate}. This very brief introduction requires elaboration.\\
 
@@ -9,7 +11,7 @@ One way to look at clustering mathematically is to consider an objective functio
 
 where $K \in \mathbb{N}$ is the number of clusters $C_{k}, k \in \{ 1,\dots,K \}$ of which the centers are $c_{k}$. Observations are $x \in \mathcal{X}$ and their weights $w_{x}$ with $\mathcal{X} = \{ x_{1}, \dots, x_{m} \}$ being the entire data set. The data in $\mathcal{X}$ lives inside a feature space $\mathcal{F}^{n}$ with $n \in \mathbb{N}$ the number of different features. There also exists a measure on $\mathcal{F}^{n}$ that allows to calculate the distance $d$ between points. 
 
-The most common specification of K-Means SOURCE and often most practical in real world applications is the feature space being a euclidean space $\mathbb{R}^{n}$ and used for its distance function $d: \mathbb{R}^{n} \times \mathbb{R}^{n} \rightarrow \mathbb{R}$, fittingly, the euclidean distance (written as $\left \| \cdot \right \|$). Using these, the optimization problem presents as
+The most common specification of K-Means and often most practical in real world applications is the feature space being a euclidean space $\mathbb{R}^{n}$ and used for its distance function $d: \mathbb{R}^{n} \times \mathbb{R}^{n} \rightarrow \mathbb{R}$, fittingly, the euclidean distance (written as $\left \| \cdot \right \|$). Using these, the optimization problem presents as
 \begin{equation}
 \begin{gathered}
     \min \sum_{k=1}^{K}\sum_{x \in C_{k}}^{} \left \| x - c_{k} \right \|^2

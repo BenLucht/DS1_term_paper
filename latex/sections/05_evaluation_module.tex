@@ -1,3 +1,53 @@
+There are graph-based indices: C Index, Dunn, Gamma, G+, McClain-Rao, Point Biserial, Silhouette, Tau, and there are prototype based indices: Calinski-Harabasz, Davies-Bouldin, PBM, Ratkowski-Lance, Ray-Turi, Wemmert-Gancarski, Xie-Beni.
+
+So far we use the \gls{DI}, \gls{CH}, \gls{DB}, and \gls{SS}, maybe also \gls{GS}.
+
 \begin{itemize}
-\item What are the results and how are they measured?
+    \item Dunn \cite{dunn1974well} brief explanation and reasons.
+    \item Calinski-Harabas \cite{calinski1974dendrite} brief explanation and reasons.
+    \item Davies-Bouldin \cite{davies1979cluster} brief explanation and reasons.
+    \item Silhouette \cite{rousseeuw1987silhouettes} brief explanation and reasons.
+    \item Gap \cite{tibshirani2001estimating} brief explanation and reasons.
 \end{itemize}
+
+Explanation of evaluation results, using the big table \ref{tab:evalutaion_table}, also using plots. Furthermore brief explanation on the result of each method separately. 
+
+\begin{table}[H]
+\begin{center}
+%\resizebox{\textwidth}{!}{%
+\begin{tabular}{lrrrr}
+Data and Method & \multicolumn{1}{c}{\gls{DI}} & \multicolumn{1}{c}{\gls{CH}} & \multicolumn{1}{c}{\gls{DB}} & \multicolumn{1}{c}{\gls{SS}} \\ \hline
+ &  &  &  &  \\
+\textbf{Housing} &  &  &  & \\
+K-Means & 1.567 & 2.346 & 3.457 & 4.856 \\
+Mean Shift & 1.567 & 2.346 & 3.457 & 4.856 \\
+Affinity & 1.567 & 2.346 & 3.457 & 4.856 \\
+Spectral & 1.567 & 2.346 & 3.457 & 4.856 \\
+ &  &  &  &  \\
+\textbf{Mall} &  &  &  &  \\
+K-Means & 1.567 & 2.346 & 3.457 & 4.856 \\
+Mean Shift & 1.567 & 2.346 & 3.457 & 4.856 \\
+Affinity & 1.567 & 2.346 & 3.457 & 4.856 \\
+Spectral & 1.567 & 2.346 & 3.457 & 4.856 \\
+ &  &  &  &  \\
+\textbf{Seeds} &  &  &  &  \\
+K-Means & 1.567 & 2.346 & 3.457 & 4.856 \\
+Mean Shift & 1.567 & 2.346 & 3.457 & 4.856 \\
+Affinity & 1.567 & 2.346 & 3.457 & 4.856 \\
+Spectral & 1.567 & 2.346 & 3.457 & 4.856 \\
+ &  &  &  &  \\
+\textbf{Wine} &  &  &  &  \\
+K-Means & 1.567 & 2.346 & 3.457 & 4.856 \\
+Mean Shift & 1.567 & 2.346 & 3.457 & 4.856 \\
+Affinity & 1.567 & 2.346 & 3.457 & 4.856 \\
+Spectral & 1.567 & 2.346 & 3.457 & 4.856
+\end{tabular}%
+%}
+\end{center}
+\caption{Comparing everything example}
+\label{tab:evalutaion_table}
+\end{table}
+
+% \begin{itemize}
+% \item What are the results and how are they measured?
+% \end{itemize}

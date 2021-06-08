@@ -1,4 +1,5 @@
 \subsection{Scikit-Learn KMeans}
+\label{subsec:sklearn_kmeans}
 
 For K-Means clustering we use the implementation provided from \cite{sklearn_api} in version 0.24.2 which is the latest stable release as of \today. 
 
@@ -6,7 +7,7 @@ One of the parameters of this function is the choice of algorithm used for the o
 
 Another option is to specify how to initialize the algorithm. It is possible to specify \mintinline[bgcolor=code-bg]{python}{random} which selects random observations from the data, to provide a list of starting positions, a custom function, or to use the default which is \mintinline[bgcolor=code-bg]{python}{kmeans++} as described in section \ref{subsec:method_kmeans}.
 
-Stopping condition for the algorithm is movement of centroids below a certain threshold, as described in section \ref{subsec:method_kmeans}, determined by calculation of the Frobenius norm of the difference in position of centroids  of two consecutive iterations. The threshold can be set as a parameter. There is also the possibility to specify how many runs with new initializations shall be run as well as a maximum number of iterations per run.
+Stopping condition for the algorithm is movement of centroids below a certain threshold, as described in section \ref{subsec:method_kmeans}, determined by calculation of the Frobenius norm of the difference in position of centroids  of two consecutive iterations. The threshold can be set as a parameter. There is also the possibility to specify how many runs with new initializations will be run as well as a maximum number of iterations per run.
 
 % \begin{minted}{python}
 % from sklearn.cluster import KMeans

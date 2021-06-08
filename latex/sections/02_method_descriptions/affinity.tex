@@ -1,0 +1,26 @@
+\subsection{Affinity Propagation}
+\textit{by Jonas Mertens}\\
+	
+Affinity Propagation is a machine learning algorithm which is used to create clusters. It was developed by Brendan J. Frey and Delbert Dueck in 2007. This algorithm does not require an input which specifies how many clusters are created. The algorithm finds the clusters by itself. Like other clustering algorithms, Affinity Propagation iteratively sends “messages” between data points. In detail, the algorithm calculates responsibility and availability in each iteration (this will be explained later on). It iterates until all data points converge. After this, the algorithm has found the clusters for the input dataset. A disadvantage of Affinity Propagation is the computation complexity. Assume there are $n$ data points, it results in a complexity of $O(n^2)$ because of the loop through all data points in every iteration. The runtime depends on the number of iterations T until the algorithm converges. Because of this, the runtime is $O(T* n^2)$.\\ 
+Algorithm description: \\
+$x_1, x_2 , \dots,  x_n$ is a set of datapoints and the input of the algorithm. s[i,k] describes the similarity between $x_i$ and $x_k$. In the \gls{sklearn} implementation, similarity is measured using the negative Euclidean distance, but this algorithm also works with other type of similarities. 
+
+The responsibility describes how is k suitable to be an exemplar for i:
+\begin{equation}
+r(i,k) \leftarrow  s(i,k) - max \left [ a(i,k') + s(i, k') \forall k \neq k' \right ]
+\end{equation}
+The availability describes what happens if i should be chosen k as an exemplar. 
+\begin{equation}
+a(i,k) \leftarrow  min \left [ 0, r(k,k) +  \sum_{i' s.t. i'\notin \{i,k\}} r(i',k) \right ]
+\end{equation}
+I am making use of the \gls{sklearn} implementation of the Affinity Propagation algorithm. An important parameter is the preference where you can chose which how many exemplars are used. 
+	
+The values for r(i,k) and a(i,k) are updated that after t iteration they are convergent:
+\begin{align}
+r \left [ i,k \right ] &= (1-\lambda)r \left [ i,k \right ] + \lambda r' \left [ i,k \right ]\\
+a \left [ i,k \right ] &= (1-\lambda)a \left [ i,k \right ] + \lambda a' \left [ i,k \right ]  
+\end{align}
+	
+$\lambda$ is a dumping factor to avoid numerical oscillation. $\lambda$ can be a float between 0.5 and 1.0. In my implementation the damping factor is 0.9. 
+	
+	

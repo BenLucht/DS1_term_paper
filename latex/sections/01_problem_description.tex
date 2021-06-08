@@ -1,14 +1,25 @@
-\begin{itemize}
-\item What general problem is addressed?
-\item What is the general methodology that is used?
-\end{itemize}
+Clustering is a long-known method in the field of Data Science and Machine Learning. It describes the process of grouping elements of a given dataset into a finite number of distinct segments such that the elements of one segment are as similar as possible to one another while maximizing the dissimilarity between different segments. The resulting segments are called clusters. Finding clusters is of interest to gain information on patterns or structures characterizing a given dataset \cite{madhulatha2012overview}.
+Each of the given data points is interpreted as a multidimensional feature vector and clusters are found by calculating vector similarities. Similarity or dissimilarity is measured using different kinds of metrics which are chosen according to the underlying data space \cite{rokach2005Clustering}.
 
-Some Latex-specific hints:
+As no a priori knowledge about the given dataset is assumed, distinguishing it from classification contexts, clustering is an unsupervised learning method. There exist several different clustering techniques which differ in their embedded assumptions on the cluster shapes or the requirement of various parameters such as the number of clusters or the bandwidth.
 
+There is a wide variety of applications for clustering methods in research and professional contexts ranging from social network analysis to image compression and even oil well operation.
 
-\begin{itemize}
-\item You can use abbreviations, like \gls{AD}, \gls{MS} or \gls{CD}.
-\item There are also symbols like for example \gls{symb:Pi}, \gls{symb:Phi} and \gls{symb:Lambda}.
-\item Last but not least, use glossary entries like \gls{glos:AD} and \gls{glos:F}.
-\item Do not forget to cite related work, like \cite{okman2011security} or \cite{borthakur2011apache}.
-\end{itemize}
+In this report, K-Means Clustering, Affinity Propagation Clustering, Mean Shift Clustering and Spectral Clustering are investigated.
+
+Each of these clustering algorithms is applied on each of the chosen datasets and clustering performance is evaluated using cluster validation indexes. In the end, results generated applying the different algorithms are compared to each other. 
+
+% \begin{itemize}
+% \item What general problem is addressed?
+% \item What is the general methodology that is used?
+% \end{itemize}
+% 
+% Some Latex-specific hints:
+% 
+% 
+% \begin{itemize}
+% \item You can use abbreviations, like \gls{AD}, \gls{MS} or \gls{CD}.
+% \item There are also symbols like for example \gls{symb:Pi}, \gls{symb:Phi} % and \gls{symb:Lambda}.
+% \item Last but not least, use glossary entries like \gls{glos:AD} and % \gls{glos:F}.
+% \item Do not forget to cite related work, like \cite{okman2011security} or % \cite{borthakur2011apache}.
+% \end{itemize}
