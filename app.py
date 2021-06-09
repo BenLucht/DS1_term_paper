@@ -5,6 +5,7 @@
 import streamlit as st
 import pandas as pd
 from code.kmeans.kmeans import cluster_kmeans
+from code.meanshift.meanshift import cluster_meanshift
 from code.plotting.plotting import plot_tsne_2d
 
 # LOAD DATA
@@ -15,11 +16,13 @@ seeds = pd.read_csv('data/seeds_dataset.txt',
 
 customers = pd.read_csv('data/Mall_Customers.csv')
 customers.columns = ['id', 'gender', 'age', 'income', 'spending_score']
+housing = pd.read_csv('data/Boston-house-price-data.csv')
+redwine = pd.read_csv('data/winequality-red.csv')
 
 # CONTROLS
 selected_data = st.sidebar.selectbox(
     'Which dataset would you like to choose?',
-    ('None', 'seeds', 'mall', 'food', 'wine'))
+    ('None', 'seeds', 'mall', 'house pricing', 'wine'))
 
 option = st.sidebar.selectbox(
     'Which algorithm would you like to choose?',
@@ -61,7 +64,46 @@ if option == 'k-means':
       st.write('Please specify your desired parameters.')
 
 elif option == 'meanshift':
-  st.write('Implementation coming soon!')
+    # set bandwidth parameter ranges
+    if selected_data == 'seeds':
+        min_bandwidth = 1
+        max_bandwidth = 6
+        default_bandwidth = 2
+    elif selected_data == 'mall':
+        min_bandwidth = 10
+        max_bandwidth = 50
+        default_bandwidth = 22
+    elif selected_data == 'house pricing':
+        min_bandwidth = 80
+        max_bandwidth = 150
+        default_bandwidth = 120
+    elif selected_data == 'wine':
+        min_bandwidth = 10
+        max_bandwidth = 40
+        default_bandwidth = 22
+    bw = st.sidebar.slider('Which bandwidth would you like to choose?', min_bandwidth, max_bandwidth, default_bandwidth)
+    st.sidebar.write("I select a bandwidth of ", bw)
+
+    if st.sidebar.button('Calculate!'):
+        if selected_data == 'seeds':
+            X = seeds[seeds.columns[:-1]]
+        elif selected_data == 'mall':
+            X = customers[['age', 'income', 'spending_score']]
+        elif selected_data == 'house pricing':
+            X = housing
+        elif selected_data == 'wine':
+            X = redwine
+
+        meanshift_labels = cluster_meanshift(X, bw)
+
+        clusters_plot = plot_tsne_2d(X, meanshift_labels, title='', size=(12, 12), state=0, returns='fig')
+
+        with st.spinner('Plotting data ...'):
+            st.pyplot(clusters_plot)
+
+    else:
+        st.write('Please specify your desired parameters.')
+
 
 elif option == 'spectral':
   st.write('Implementation coming soon!')
