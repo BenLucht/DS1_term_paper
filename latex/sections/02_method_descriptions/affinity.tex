@@ -1,5 +1,5 @@
 \subsection{Affinity Propagation}
-\textit{by Jonas Mertens}\\
+\textit{by J.M.}\\
 	
 Affinity Propagation is a machine learning algorithm which is used to create clusters. It was developed by Brendan J. Frey and Delbert Dueck in 2007. This algorithm does not require an input which specifies how many clusters are created. The algorithm finds the clusters by itself. Like other clustering algorithms, Affinity Propagation iteratively sends “messages” between data points. In detail, the algorithm calculates responsibility and availability in each iteration (this will be explained later on). It iterates until all data points converge. After this, the algorithm has found the clusters for the input dataset. A disadvantage of Affinity Propagation is the computation complexity. Assume there are $n$ data points, it results in a complexity of $O(n^2)$ because of the loop through all data points in every iteration. The runtime depends on the number of iterations T until the algorithm converges. Because of this, the runtime is $O(T* n^2)$.\\ 
 Algorithm description: \\

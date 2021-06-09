@@ -22,11 +22,11 @@ redwine = pd.read_csv('data/winequality-red.csv')
 # CONTROLS
 selected_data = st.sidebar.selectbox(
     'Which dataset would you like to choose?',
-    ('None', 'seeds', 'mall', 'house pricing', 'wine'))
+    ('None', 'Seeds', 'Mall Customers', 'House Pricing', 'Wine Quality'))
 
 option = st.sidebar.selectbox(
     'Which algorithm would you like to choose?',
-    ('None', 'k-means', 'meanshift', 'spectral', 'affinity prop'))
+    ('None', 'K-Means', 'Mean Shift', 'Spectral Clustering', 'Affinity Propagation'))
 
 if selected_data != 'None':
     st.write('You selected:', selected_data)
@@ -42,42 +42,46 @@ else:
 
 
 # LOGIC
-if option == 'k-means':
+if option == 'K-Means':
 
-  n = st.sidebar.slider('How many clusters would you like?', 2, 8, 3)
-  st.sidebar.write("I want ", n, 'clusters.')
+    n = st.sidebar.slider('How many clusters would you like?', 2, 8, 3)
+    st.sidebar.write("I want ", n, 'clusters.')
 
-  if st.sidebar.button('Calculate!'):
-      if selected_data == 'seeds':
-          X = seeds[seeds.columns[:-1]]
-      elif selected_data == 'mall':
-          X = customers[['age', 'income', 'spending_score']]
+    if st.sidebar.button('Calculate!'):
+        if selected_data == 'Seeds':
+            X = seeds[seeds.columns[:-1]]
+        elif selected_data == 'Mall Customers':
+            X = customers[['age', 'income', 'spending_score']]
+        elif selected_data == 'House Pricing':
+            X = housing
+        elif selected_data == 'Wine Quality':
+            X = redwine
 
-      kmeans_labels = cluster_kmeans(X, n, state=0)
+        kmeans_labels = cluster_kmeans(X, n, state=0)
 
-      clusters_plot = plot_tsne_2d(X, kmeans_labels, title='', size=(12, 12), state=0, returns='fig')
+        clusters_plot = plot_tsne_2d(X, kmeans_labels, title='', size=(12, 12), state=0, returns='fig')
 
-      with st.spinner('Plotting data ...'):
-          st.pyplot(clusters_plot)
+        with st.spinner('Plotting data ...'):
+            st.pyplot(clusters_plot)
 
-  else:
-      st.write('Please specify your desired parameters.')
+    else:
+        st.write('Please specify your desired parameters.')
 
-elif option == 'meanshift':
+elif option == 'Mean Shift':
     # set bandwidth parameter ranges
-    if selected_data == 'seeds':
+    if selected_data == 'Seeds':
         min_bandwidth = 1
         max_bandwidth = 6
         default_bandwidth = 2
-    elif selected_data == 'mall':
+    elif selected_data == 'Mall Customers':
         min_bandwidth = 10
         max_bandwidth = 50
         default_bandwidth = 22
-    elif selected_data == 'house pricing':
+    elif selected_data == 'House Pricing':
         min_bandwidth = 80
         max_bandwidth = 150
         default_bandwidth = 120
-    elif selected_data == 'wine':
+    elif selected_data == 'Wine Quality':
         min_bandwidth = 10
         max_bandwidth = 40
         default_bandwidth = 22
@@ -85,13 +89,13 @@ elif option == 'meanshift':
     st.sidebar.write("I select a bandwidth of ", bw)
 
     if st.sidebar.button('Calculate!'):
-        if selected_data == 'seeds':
+        if selected_data == 'Seeds':
             X = seeds[seeds.columns[:-1]]
-        elif selected_data == 'mall':
+        elif selected_data == 'Mall Customers':
             X = customers[['age', 'income', 'spending_score']]
-        elif selected_data == 'house pricing':
+        elif selected_data == 'House Pricing':
             X = housing
-        elif selected_data == 'wine':
+        elif selected_data == 'Wine Quality':
             X = redwine
 
         meanshift_labels = cluster_meanshift(X, bw)
@@ -105,8 +109,8 @@ elif option == 'meanshift':
         st.write('Please specify your desired parameters.')
 
 
-elif option == 'spectral':
+elif option == 'Spectral Clustering':
   st.write('Implementation coming soon!')
 
-elif option == 'affinity prop':
+elif option == 'Affinity Propagation':
   st.write('Implementation coming soon!')
