@@ -1,8 +1,20 @@
 from sklearn.cluster import AffinityPropagation
-
-def cluster_affinity(input):
+import numpy as np
+def cluster_affinity(data, preference, returns='labels'):
   '''
-  inputs:   info on the parameter
+  data:      panda dataframe
+  preference:  numbers of exemplars 
+  returns:    'labeled' returns labeled data matrix, 
+              'labels' returns labels-array only (default)
   '''
 
-  return None
+  print(preference)
+
+  af = AffinityPropagation(preference=-7222, verbose=False, max_iter=1200).fit(data)
+
+  if returns == 'labels':
+    return af.labels_
+  elif returns == 'labeled':
+    return np.c_[data, af.labels_]
+  else:
+    return af

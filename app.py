@@ -5,8 +5,11 @@
 import streamlit as st
 import pandas as pd
 from code.kmeans.kmeans import cluster_kmeans
+from code.affinity.affinity import cluster_affinity
 from code.meanshift.meanshift import cluster_meanshift
 from code.plotting.plotting import plot_tsne_2d
+
+
 
 # LOAD DATA
 seeds = pd.read_csv('data/seeds_dataset.txt', 
@@ -16,6 +19,8 @@ seeds = pd.read_csv('data/seeds_dataset.txt',
 
 customers = pd.read_csv('data/Mall_Customers.csv')
 customers.columns = ['id', 'gender', 'age', 'income', 'spending_score']
+
+
 housing = pd.read_csv('data/Boston-house-price-data.csv')
 redwine = pd.read_csv('data/winequality-red.csv')
 
@@ -113,4 +118,26 @@ elif option == 'Spectral Clustering':
   st.write('Implementation coming soon!')
 
 elif option == 'Affinity Propagation':
-  st.write('Implementation coming soon!')
+    bw = st.sidebar.slider('Which preference would you like to choose?', -10000, -50, -7000)
+    st.sidebar.write("I select a preference of ", bw)
+    if st.sidebar.button('Calculate!'):
+        if selected_data == 'Seeds':
+            X = seeds[seeds.columns[:-1]]
+        elif selected_data == 'Mall Customers':
+            X = customers[['age', 'income', 'spending_score']]
+        elif selected_data == 'House Pricing':
+            X = housing
+        elif selected_data == 'Wine Quality':
+            X = redwine
+
+
+    
+        affinity_labes = cluster_affinity(X, bw)
+
+        clusters_plot = plot_tsne_2d(X, affinity_labes, title='', size=(12, 12), state=0, returns='fig')
+
+        with st.spinner('Plotting data ...'):
+            st.pyplot(clusters_plot)
+
+    else:
+        st.write('Please specify your desired parameters.  ')
