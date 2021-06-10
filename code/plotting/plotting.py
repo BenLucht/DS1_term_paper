@@ -17,6 +17,14 @@ clusters = [
   ('aquamarine', 'v', 10),
 ]
 
+def tsne_transform(data, state=None):
+  '''
+  data:     n x m matrix of data (n observations, m features)
+  state:    random initialization (default None)
+  '''
+  
+  return TSNE(n_components=2, random_state=state).fit_transform(data)
+
 def plot_tsne_2d(data, labels, title='', size=(12, 12), state=None, returns='plot'):
   '''
   data:     n x m matrix of data (n observations, m features)
@@ -28,9 +36,9 @@ def plot_tsne_2d(data, labels, title='', size=(12, 12), state=None, returns='plo
             'fig' returns figure object
   '''
 
-  data_projected_2d = TSNE(n_components=2, random_state=state).fit_transform(data)
+  # data_projected_2d = TSNE(n_components=2, random_state=state).fit_transform(data)
 
-  labeled_data = np.c_[data_projected_2d, labels]
+  labeled_data = np.c_[data, labels]
 
   fig = plt.figure(figsize=size)
   ax = fig.add_subplot(111)
@@ -39,8 +47,9 @@ def plot_tsne_2d(data, labels, title='', size=(12, 12), state=None, returns='plo
   n = len(set(labels))
 
   # adds seperate scatter for each cluster 
-  for color, marker, label in clusters[0:n]:
-    current_cluster = labeled_data[labeled_data[:,-1] == label]
+  for i in range(n):
+    color, marker, _ = clusters[i % 10] # if more than 11 clusters, will wrap
+    current_cluster = labeled_data[labeled_data[:,-1] == i]
 
     ax.scatter(
       current_cluster[:, 0], 

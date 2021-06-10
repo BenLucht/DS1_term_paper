@@ -7,22 +7,31 @@ import pandas as pd
 from code.kmeans.kmeans import cluster_kmeans
 from code.affinity.affinity import cluster_affinity
 from code.meanshift.meanshift import cluster_meanshift
-from code.plotting.plotting import plot_tsne_2d
+from code.plotting.plotting import plot_tsne_2d, tsne_transform
 
-
+# cached wrapper for tsne_transform function
+@st.cache
+def tsne_transform_2(data, state=None):
+    print('transforming')
+    return tsne_transform(data, state=state)
 
 # LOAD DATA
 seeds = pd.read_csv('data/seeds_dataset.txt', 
                     sep='\t', 
                     names=['area', 'perimeter', 'compactness', 'length', 'width', 'asymmetry_coeff', 'length_groove', 'label']
                    )
-
+seeds = seeds[seeds.columns[:-1]]
 customers = pd.read_csv('data/Mall_Customers.csv')
 customers.columns = ['id', 'gender', 'age', 'income', 'spending_score']
-
-
 housing = pd.read_csv('data/Boston-house-price-data.csv')
 redwine = pd.read_csv('data/winequality-red.csv')
+
+# calculate cached version of tsne transformed data 
+# to speed up interactions
+seeds_tsne = tsne_transform_2(seeds[seeds.columns[:-1]], state=0)
+customers_tsne = tsne_transform_2(customers[['age', 'income', 'spending_score']], state=0)
+housing_tsne = tsne_transform_2(housing, state=0)
+redwine_tsne = tsne_transform_2(redwine, state=0)
 
 # CONTROLS
 selected_data = st.sidebar.selectbox(
@@ -54,17 +63,21 @@ if option == 'K-Means':
 
     if st.sidebar.button('Calculate!'):
         if selected_data == 'Seeds':
-            X = seeds[seeds.columns[:-1]]
+            X = seeds
+            X_plot = seeds_tsne
         elif selected_data == 'Mall Customers':
             X = customers[['age', 'income', 'spending_score']]
+            X_plot = customers_tsne
         elif selected_data == 'House Pricing':
             X = housing
+            X_plot = housing_tsne
         elif selected_data == 'Wine Quality':
             X = redwine
+            X_plot = redwine_tsne
 
         kmeans_labels = cluster_kmeans(X, n, state=0)
 
-        clusters_plot = plot_tsne_2d(X, kmeans_labels, title='', size=(12, 12), state=0, returns='fig')
+        clusters_plot = plot_tsne_2d(X_plot, kmeans_labels, title='', size=(12, 12), state=0, returns='fig')
 
         with st.spinner('Plotting data ...'):
             st.pyplot(clusters_plot)
@@ -90,22 +103,27 @@ elif option == 'Mean Shift':
         min_bandwidth = 10
         max_bandwidth = 40
         default_bandwidth = 22
+
     bw = st.sidebar.slider('Which bandwidth would you like to choose?', min_bandwidth, max_bandwidth, default_bandwidth)
     st.sidebar.write("I select a bandwidth of ", bw)
 
     if st.sidebar.button('Calculate!'):
         if selected_data == 'Seeds':
-            X = seeds[seeds.columns[:-1]]
+            X = seeds
+            X_plot = seeds_tsne
         elif selected_data == 'Mall Customers':
             X = customers[['age', 'income', 'spending_score']]
+            X_plot = customers_tsne
         elif selected_data == 'House Pricing':
             X = housing
+            X_plot = housing_tsne
         elif selected_data == 'Wine Quality':
             X = redwine
+            X_plot = redwine_tsne
 
         meanshift_labels = cluster_meanshift(X, bw)
 
-        clusters_plot = plot_tsne_2d(X, meanshift_labels, title='', size=(12, 12), state=0, returns='fig')
+        clusters_plot = plot_tsne_2d(X_plot, meanshift_labels, title='', size=(12, 12), state=0, returns='fig')
 
         with st.spinner('Plotting data ...'):
             st.pyplot(clusters_plot)
@@ -120,21 +138,24 @@ elif option == 'Spectral Clustering':
 elif option == 'Affinity Propagation':
     bw = st.sidebar.slider('Which preference would you like to choose?', -10000, -50, -7000)
     st.sidebar.write("I select a preference of ", bw)
+
     if st.sidebar.button('Calculate!'):
         if selected_data == 'Seeds':
-            X = seeds[seeds.columns[:-1]]
+            X = seeds
+            X_plot = seeds_tsne
         elif selected_data == 'Mall Customers':
             X = customers[['age', 'income', 'spending_score']]
+            X_plot = customers_tsne
         elif selected_data == 'House Pricing':
             X = housing
+            X_plot = housing_tsne
         elif selected_data == 'Wine Quality':
             X = redwine
+            X_plot = redwine_tsne
 
+        affinity_labels = cluster_affinity(X, bw)
 
-    
-        affinity_labes = cluster_affinity(X, bw)
-
-        clusters_plot = plot_tsne_2d(X, affinity_labes, title='', size=(12, 12), state=0, returns='fig')
+        clusters_plot = plot_tsne_2d(X_plot, affinity_labels, title='', size=(12, 12), state=0, returns='fig')
 
         with st.spinner('Plotting data ...'):
             st.pyplot(clusters_plot)
