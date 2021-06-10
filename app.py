@@ -8,8 +8,7 @@ from code.kmeans.kmeans import cluster_kmeans
 from code.affinity.affinity import cluster_affinity
 from code.meanshift.meanshift import cluster_meanshift
 from code.plotting.plotting import plot_tsne_2d
-from sklearn import metrics
-from sklearn import preprocessing
+
 
 
 # LOAD DATA
