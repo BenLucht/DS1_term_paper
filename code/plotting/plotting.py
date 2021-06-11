@@ -17,6 +17,14 @@ clusters = [
   ('aquamarine', 'v', 10),
 ]
 
+def tsne_transform(data, state=None):
+  '''
+  data:     n x m matrix of data (n observations, m features)
+  state:    random initialization (default None)
+  '''
+
+  return TSNE(n_components=2, random_state=state).fit_transform(data)
+
 def plot_tsne_2d(data, labels, title='', size=(12, 12), state=None, returns='plot'):
   '''
   data:     n x m matrix of data (n observations, m features)
@@ -28,9 +36,9 @@ def plot_tsne_2d(data, labels, title='', size=(12, 12), state=None, returns='plo
             'fig' returns figure object
   '''
 
-  data_projected_2d = TSNE(n_components=2, random_state=state).fit_transform(data)
+  # data_projected_2d = TSNE(n_components=2, random_state=state).fit_transform(data)
 
-  labeled_data = np.c_[data_projected_2d, labels]
+  labeled_data = np.c_[data, labels]
 
   fig = plt.figure(figsize=size)
   ax = fig.add_subplot(111)
@@ -39,8 +47,9 @@ def plot_tsne_2d(data, labels, title='', size=(12, 12), state=None, returns='plo
   n = len(set(labels))
 
   # adds seperate scatter for each cluster 
-  for color, marker, label in clusters[0:n]:
-    current_cluster = labeled_data[labeled_data[:,-1] == label]
+  for i in range(n):
+    color, marker, _ = clusters[i % 10] # if more than 11 clusters, will wrap
+    current_cluster = labeled_data[labeled_data[:,-1] == i]
 
     ax.scatter(
       current_cluster[:, 0], 
@@ -106,6 +115,43 @@ def plot_data_3d(
   ax.set_ylabel(feature_names[1])
   ax.set_xlabel(feature_names[2])
   ax.set_title('')
+
+  if returns == 'plot':
+    plt.show()
+  else:
+    return fig
+
+
+def plot_indices(indices, title='Indices', parameter='Parameter', size=(10,10), returns='plot'):
+  '''
+  indices:      dataframe containing CH, DB, S, D index, Parameter (p x 5 matrix)
+  title:        title for the plot (default '')
+  parameter:    name of parameter
+  size:         size-tuple for the plot (width, height) in inches (default (12,12))
+  returns:      'plot' returns nothing and just plots
+                'fig' returns figure object
+  '''
+
+  x = np.array(indices[['Parameter']])
+  Y = np.array(indices[['Calinski-Harabasz', 'Davies-Bouldin', 'Silhouette', 'Dunn']])
+
+  fig = plt.figure(figsize=size)
+  fig.suptitle(title)
+
+  linewidth = 1.5
+
+  ax = fig.add_subplot(2,1,1)
+  ax.plot(x, Y[:, 0], label='Calinski-Harabasz', color='r', linestyle='dotted', linewidth=linewidth)
+  ax.legend(loc=4)
+  ax.set_ylabel('Index value')
+
+  ax = fig.add_subplot(2,1,2)
+  ax.plot(x, Y[:, 1], label='Davies-Bouldin', linestyle='solid', linewidth=linewidth)
+  ax.plot(x, Y[:, 2], label='Silhouette', linestyle='dashdot', linewidth=linewidth)
+  ax.plot(x, Y[:, 3], label='Dunn', linestyle='dashed', linewidth=linewidth)
+  ax.legend(loc=4)
+  ax.set_xlabel(parameter)
+  ax.set_ylabel('Index value')
 
   if returns == 'plot':
     plt.show()

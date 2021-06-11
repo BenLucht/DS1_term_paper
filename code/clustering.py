@@ -2,8 +2,8 @@
 
 import pandas as pd
 from kmeans.kmeans import cluster_kmeans
-from plotting.plotting import plot_tsne_2d, plot_data_3d
-from evaluation.evaluation import get_indices
+from plotting.plotting import tsne_transform, plot_tsne_2d, plot_data_3d, plot_indices
+from evaluation.evaluation import get_indices, get_all_indices
 
 seeds = pd.read_csv('../data/seeds_dataset.txt',
                     sep='\t', 
@@ -26,6 +26,10 @@ plot_data_3d(
     returns='plot'
   )
 
-plot_tsne_2d(seeds_labeled[:, :-1], seeds_labeled[:, -1], title='Seeds', state=0)
+X = tsne_transform(seeds_labeled[:, :-1], state=0)
+
+plot_tsne_2d(X, seeds_labeled[:, -1], title='Seeds', state=0)
 
 print(get_indices(seeds_labeled[:, :-1], seeds_labeled[:, -1]))
+
+plot_indices(get_all_indices(cluster_kmeans, seeds_labeled[:, :-1], [n for n in range(2, 10)]))
