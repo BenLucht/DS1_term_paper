@@ -19,6 +19,7 @@ housing = pd.read_csv('data/Boston-house-price-data.csv')
 redwine = pd.read_csv('data/winequality-red.csv')
 
 
+
 @st.cache
 def mydata(arg1):
     myalgo = arg1
