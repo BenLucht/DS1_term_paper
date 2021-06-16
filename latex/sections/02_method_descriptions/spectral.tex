@@ -12,6 +12,7 @@ The Epsilon-neighbourhood Graph sets the parameter epsilon already. Afterwards e
 By using the k-nearest neighbours strategy a parameter k is set as well. Then, for two vertices u and v, an edge is directed from u to v only if v is among the k-nearest neighbours of u. 
 To build the fully-connected graph, each point is connected with an undirected edge-weighted by the distance between the two points to every other point. Since this approach is used to model the local neighbourhood relationships thus typically the Gaussian similarity metric is used to calculate the distance. \newline
 
+
 2.	Projecting the data onto a lower Dimensional Space: This step is done to account for the possibility that members of the same cluster may be far away in the given dimensional space. Thus the dimensional space is reduced so that those points are closer in the reduced dimensional space and thus can be clustered together by a traditional clustering algorithm. It is done by computing the Graph Laplacian Matrix . To compute it though first, the degree of a node needs to be defined. The degree of the $i$th node is given by (Formel noch einfügen) \newline
 
 Note that $w_{i,j}$, is the edge between the nodes i and j as defined in the adjacency matrix above. The degree matrix is defined as follows (noch einfügen) \newline
