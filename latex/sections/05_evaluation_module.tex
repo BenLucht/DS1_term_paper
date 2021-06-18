@@ -1,8 +1,8 @@
 Due to the nature of clustering as an unsupervised machine learning method, it is typically applied to datasets lacking prior information on grouping. Therefore measuring the performance of each method can only be performed on the data and the labeling produced by each clustering algorithm. These types of calculations are commonly called \textit{internal cluster validation} indices.
 
-Differentiating by the way compactness and separation are measured \cite{balbi2016cosine} split indices into two groups. There are graph based indices: C Index, Dunn, Gamma, G+, McClain-Rao, Point Biserial, Silhouette, Tau, and there are prototype based indices: Calinski-Harabasz, Davies-Bouldin, Pakhira-Bandyopadhyay-Maulik (PBM), Ratkowski-Lance, Ray-Turi, Wemmert-Gancarski, Xie-Beni. 
+Differentiating by the way compactness and separation are measured \cite{balbi2016cosine} split indices into two groups. There are graph based indices: C Index, Dunn, Gamma, G+, McClain-Rao, Point Biserial, Silhouette, Tau, and there are prototype based indices: Calinski-Harabasz, Davies-Bouldin, Pakhira-Bandyopadhyay-Maulik (PBM), Ratkowski-Lance, Ray-Turi, Xie-Beni, Wemmert-Gancarski. 
 
-We have decided to use two indices from each group \gls{DI} and \gls{SI}, \gls{CH}, \gls{DB}. 
+We have decided to use two indices from each group: \gls{DI} and \gls{SI}, \gls{CH}, \gls{DB}. 
 
 
 \subsection{Dunn Index}
@@ -27,7 +27,9 @@ The Calinski-Harabasz criterion \cite{calinski1974dendrite} is defined as a popo
 \begin{equation}
         CH = \frac{S_{B}}{S_{W}}\frac{m-K}{K-1} = \frac{\sum_{k=1}^{K} \left | C_{k} \right | \left \| c_{k} - \sum_{x' \in X}^{} x' \right \|^{2}}{\sum_{k=1}^{K}\sum_{x \in C_{k}}^{} \left \| x - c_{i} \right \|^{2}} \frac{m-K}{K-1}
 \end{equation}
-utilizing the same notation as equation \ref{eq:kmeans_basic_other}. Between-cluster variance is divided by within-cluster variance. Dividing the data into more partitions of course reduces within-cluster variance, which is why there is also a scaling factor (second fraction representing degrees of freedom) to account for it. In comparison to \gls{DB} between-cluster variance is calculated in relation to the center of the data set in place of individual cluster centers. Due to its construction (distance measure) this index performs well when clusters form mostly convex shapes. A comparative study of 30 cluster validation indices \cite{arbelaitz2013extensive} ranks \gls{CH} performance near the top in many applications, particularly when evaluating K-Means results.
+utilizing the same notation as equation \ref{eq:kmeans_basic_other}. Between-cluster variance is divided by within-cluster variance. Dividing the data into more partitions of course reduces within-cluster variance, which is why there is also a scaling factor (second fraction representing degrees of freedom) to account for it. In comparison to \gls{DB} between-cluster variance is calculated in relation to the center of the data set in place of between individual cluster centers themselves. 
+
+Due to its construction (distance measure) this index performs well when clusters form mostly convex shapes. This can lead to mis-evaluation if the underlying data does not comprise of such globular clusters so a method capturing this might score lower while actually fitting the data better. It may therefore be better suited to compare different parameters for the same algorithm instead of comparing different algorithms. A comparative study of 30 cluster validation indices \cite{arbelaitz2013extensive} ranks \gls{CH} performance in evaluating fit near the top in many applications, particularly when evaluating K-Means results as expected.
     
 \subsection{Davies-Bouldin Index}
 \textit{written by J.M.}\\
@@ -69,7 +71,7 @@ We make use of the Silhouette Score as it can be applied on cluster results gene
 
 \subsection{Results}
 
-Explanation of evaluation results, using the big table \ref{tab:evalutaion_table}, also using plots. Furthermore brief explanation on the result of each method separately. 
+In the following there is a discussion of the results of all clustering efforts in detail. A brief overview of the evaluation results can be found in table \ref{tab:evalutaion_table}. For each data set there is a row for each algorithm used. In columns are the results for each index. The cells represent the highest (lowest for \gls{DB} respectively) value achieved by applying various parameter configurations. It should be noted that comparing results across different methods does not show the entire picture but it can yield indications on performance. MORE WHEN RESULTS.
 
 \begin{table}[H]
 \begin{center}
@@ -103,7 +105,7 @@ Spectral & 1.567 & 2.346 & 3.457 & 4.856
 \end{tabular}%
 %}
 \end{center}
-\caption{Comparing everything example}
+\caption{Comparing All Algorithms On All Data Sets For All Evaluation Indices}
 \label{tab:evalutaion_table}
 \end{table}
 
@@ -111,6 +113,7 @@ Spectral & 1.567 & 2.346 & 3.457 & 4.856
 \subsubsection{Seeds K-Means}
 \textit{written by B.L.}\\
 
+\vspace{-0.5cm}
 \begin{table}[H]
 \begin{center}
 %\resizebox{\textwidth}{!}{%
@@ -140,12 +143,13 @@ Table \ref{tab:kmeans_seeds_table} contains the index scores for each of the ind
 \label{fig:kmeans_seeds_comparison_plot}
 \end{figure}
 
+\vspace{-0.5cm}
 Looking at figure \ref{fig:kmeans_seeds_comparison_plot} (one line for each index, two panels because of the vastly different scale of \gls{CH}) one can see a clear maximum in \gls{CH} value and a local maximum in \gls{DI} as well as a change in slope for \gls{SI} at three clusters each. Following the described logic, \gls{DB} suggests also considering five clusters as an option. 
 
 As mentioned in section \ref{sec:data_description} this dataset originally comes with labels which allows to use them as a benchmark to see how the clustering performs. Plotting (figure \ref{fig:kmeans_seeds_tsne}) two dimensional representations (see t-SNE in section \ref{sec:frontend_description}) of the K-Means clustered result and the original data shows a few things: the algorithm has, as expected, produced non-overlapping mostly contiguously shaped clusters in contrast to the original data. However using three clusters has generally produced a reasonably good fit, as is supported by an accuracy of 89.5\%, precision of 90\% and recall of 89.5\% to name a few standard metrics.
 
 \begin{figure}[H]
-\caption{Example with 1 dimension and 10 points bad starting position}
+\caption{Seeds Data Set Comparison Clustering and Original Labels}
 \begin{center}
 \includegraphics[width=1.0\textwidth]{images/kmeans_seeds_tsne.pdf}
 \end{center}
@@ -160,54 +164,69 @@ As mentioned in section \ref{sec:data_description} this dataset originally comes
 \textit{written by B.L.}\\
 
 As one of the features is categorical (gender), this is not an ideal application of the K-Means clustering method. The categories can be resolved into discrete values so that calculations can be run, but the arbitrary nature of this does not really allow for good interpretation of the results. An exemplary three dimensional plot \ref{fig:kmeans_customers_3d} shows the issue: 
+
 \begin{wrapfigure}{r}{0.5\textwidth}
   \centering
     \includegraphics[width=0.48\textwidth, clip]{images/kmeans_customers_3d.pdf}
   \label{fig:kmeans_customers_3d}
-  \caption{Split Data Due To Categorical Feature}
+  \caption{Split Data Due To {Categorical} Feature}
 \end{wrapfigure}
-gender is represented on the z-axis and the two manifestations simply rip the data into two partitions. When gender is encoded as 0 and 1, this showed almost no effect. When using 0 and 100, it leads to a doubling in the index-recommended number of clusters. One attempt to deal with this is to scale all data between 0 and 1 but this aggravated the problem instead of improving on it. Extensions of the K-Means method have been devised to deal with this type of data (as described in section \ref{subsec:method_kmeans}) but their application here seems beyond the scope of this work. Using the gender feature also does not improve scores in the evaluation methods used. Given these circumstances, considering plot \ref{fig:kmeans_customers_indices_plot} suggests considering the results for 2, 3 or 8 clusters.
+
+gender is represented on the z-axis and the two manifestations simply rip the data into two partitions. When gender is encoded as 0 and 1, this showed almost no effect. When using 0 and 100, it leads to a doubling in the index-recommended number of clusters. One attempt to deal with this is to scale all data between 0 and 1 but this aggravated the problem instead of improving on it. Extensions of the K-Means method have been devised to deal with this type of data (as described in section \ref{subsec:method_kmeans}) but their application here seems beyond the scope of this work. Using the gender feature also does not improve scores in the evaluation methods used. Given these circumstances, considering plot \ref{fig:kmeans_customers_indices_plot} suggests considering the results for 2 (\gls{CH}, \gls{DB}, \gls{SI}), 7 (\gls{DB}) or 8 (\gls{CH}) clusters.
 
 \begin{figure}[h]
 \caption{K-Means Mall Customers Dataset Indices by Number of Clusters}
 \begin{center}
 \includegraphics[width=1.0\textwidth]{images/kmeans_customers_index_plot.pdf}
 \end{center}
-\label{fig:kmeans_customers_comparison_plot}
+\label{fig:kmeans_customers_indices_plot}
 \end{figure}
 
+\vspace{-0.5cm}
 The dataset contains four features, three of which have a measurable and interpretable impact on clustering, which lends itself to a visual comparison in three dimensional space. Figure \ref{fig:kmeans_customers_3d_multi} shows three plots, one for each suggested number of clusters. The highest overall evaluation scores were achieved for two clusters and purely from a visual standpoint this seems to hold up.
 
 \begin{figure}[h]
-\caption{Example with 1 dimension and 10 points bad starting position}
+\caption{Mall Customers 3D Plot Clustering Options}
 \begin{center}
 \includegraphics[width=1.0\textwidth]{images/kmeans_mall_3d_multi.pdf}
 \end{center}
 \label{fig:kmeans_customers_3d_multi}
 \end{figure}
+\vspace{-0.5cm}
 
 %Rotating the plot shows that both partitions contain very similar clusters but due to the way K-Means works they are not recognized as the same. The data shows either two clusters (simply male cluster and female cluster) or an ideal number of clusters double the amount perceived by a human to be reasonable.
 
 \subsubsection{Housing K-Means}
 \textit{written by B.L.}\\
 
-This dataset is challenging for K-Means clustering due to the high number of features. As described in section \ref{subsec:method_kmeans} the concept of distance does not hold up well in high dimensional cases. Attempts to transform the data into lower dimensional representations through principle component analysis did not yield an improvement in clustering performance. Data in figure \ref{fig:kmeans_housing_indices_plot} suggests to consider 2, 3, 4 or on the other hand a very high number of clusters.
+This dataset is challenging for K-Means clustering due to the high number of features. As described in section \ref{subsec:method_kmeans} the concept of distance does not hold up well in high dimensional cases. Attempts to transform the data into lower dimensional representations through principle component analysis did not yield an improvement in clustering performance. Data in figure \ref{fig:kmeans_housing_indices_plot} suggests to consider 2 (\gls{DI}), 3 (\gls{SI}, \gls{DB}) or 4 (\gls{CH}) clusters.
 
-\begin{figure}[h]
+\begin{figure}[H]
 \caption{K-Means Housing Dataset Indices by Number of Clusters}
 \begin{center}
 \includegraphics[width=1.0\textwidth]{images/kmeans_housing_index_plot.pdf}
 \end{center}
-\label{fig:kmeans_housing_comparison_plot}
+\label{fig:kmeans_housing_indices_plot}
 \end{figure}
 
-Due to the high dimensionality of the data, looking at different angles in three dimensions to get an understanding is not feasible. Therefore a two dimensional transformation (t-SNE, see section \ref{sec:frontend_description} will help. Figure \ref{fig:kmeans_housing_2d_comparison} shows the case of two, three and 15 as representation for a significantly higher number of clusters. From a visual standpoint, two and three clusters seem to capture the visibly separated parts of the data quite well, while the high cluster count suggests it might be reasonable to consider the idea of there being a much more complex underlying structure to the data which is not well captured through the method at hand.
+\vspace{-0.5cm}
+Due to the high dimensionality of the data, looking at different angles in three dimensions to get an understanding is not feasible. Therefore a two dimensional transformation (t-SNE, see section \ref{sec:frontend_description}) will help. Figure \ref{fig:kmeans_housing_2d_comparison} shows the case of two, three and 15 as representation for a significantly higher number of clusters. From a visual standpoint, two and three clusters seem to capture the visibly separation of parts of the data quite well, while the high cluster count suggests it might be reasonable to consider the idea of there being a much more complex underlying structure to the data which is not well captured through the method at hand.
+
+\begin{figure}[H]
+\caption{K-Means Housing Dataset t-SNE Transformed Data Plot}
+\begin{center}
+\includegraphics[width=1.0\textwidth]{images/kmeans_housing_tsne.pdf}
+\end{center}
+\label{fig:kmeans_housing_2d_comparison}
+\end{figure}
+\vspace{-0.5cm}
 
 \subsubsection{Wine K-Means}
 \textit{written by B.L.}\\
 
-The wine dataset again presents a challenge due to its high feature count, the highest of all the datasets in this comparison as well as having one discrete feature. Dimensionality reduction helps to speed up calculation but does not show an improvement in evaluation index performance. The plot of evaluation indices in figure \ref{fig:kmeans_wine_indices_comparison} gives an indication around eight to ten clusters
+The wine dataset again presents a challenge due to its high feature count, the highest of all the datasets in this comparison as well as having one discrete feature. Dimensionality reduction helps to speed up calculation but does not show an improvement in evaluation index performance. The plot of evaluation indices in figure \ref{fig:kmeans_wine_indices_comparison} gives an indication for 2 (\gls{SI}, \gls{DB}), 3 (\gls{CH}), or 6 (\gls{CH}, \gls{DB}) clusters
 
+\vspace{-0.5cm}
 \begin{figure}[h]
 \caption{K-Means Wine Dataset Indices by Number of Clusters}
 \begin{center}
@@ -216,9 +235,12 @@ The wine dataset again presents a challenge due to its high feature count, the h
 \label{fig:kmeans_wine_indices_comparison}
 \end{figure}
 
-but looking at the two dimensional transformed data in figure \ref{fig:kmeans_wine_tsne} does not allow for any visual evaluation concerning the quality of fit. The result is inconclusive and without a focus on feature engineering other methods may be better suited to deal with this dataset.
+but looking at the two dimensional transformed data in figure \ref{fig:kmeans_wine_tsne} does not allow for any visual evaluation concerning the quality of fit.
 
-\begin{figure}[h]
+%The result is inconclusive and without a focus on feature engineering other methods may be better suited to deal with this dataset.
+
+
+\begin{figure}[H]
 \caption{K-Means Wine Dataset Indices by Number of Clusters}
 \begin{center}
 \includegraphics[width=1.0\textwidth]{images/kmeans_wine_tsne.pdf}
@@ -226,6 +248,24 @@ but looking at the two dimensional transformed data in figure \ref{fig:kmeans_wi
 \label{fig:kmeans_wine_tsne}
 \end{figure}
 
+Looking back at the PCA step mentioned before, the picture becomes clearer when utilizing it as a visualization support and looking at a three dimensional representation of the transformed data in figure \ref{fig:kmeans_wine_3d_multi} gives a clearer understanding of how the clustering has worked out. The component driving the differentiation between clusters called \textit{PCA 1} captures 94\% of the variance and loadings show it being driven in large part by the two \textit{sulfur} concentration features.
+
+\vspace{-0.5cm}
+\begin{figure}[H]
+\caption{Wine Dataset 3D Plot Clustering Options}
+\centering
+\includegraphics[width=1.0\textwidth]{images/kmeans_wine_3d_multi.pdf}
+\label{fig:kmeans_wine_3d_multi}
+\end{figure}
+
+\vspace{-0.5cm}
+\begin{wrapfigure}{r}{0.5\textwidth}
+  \centering
+    \includegraphics[trim={1cm 0cm 1cm 1cm},width=0.45\textwidth, clip]{images/kmeans_wine_pca_original.pdf}
+  \label{fig:kmeans_wine_pca_original}
+  \caption{Wine 3D Original Labeling}
+\end{wrapfigure}
+Looking at the original labeling of the data however shows the limitations of clustering and especially K-Means clustering for this data set. Figure \ref{fig:kmeans_wine_pca_original} shows the same projection as figure \ref{fig:kmeans_wine_3d_multi} but this time with the original labeling. The math on accuracy and recall at 19.8\% and precision somewhat better at 58.2\% also shows the less than optimal performance. However this is not unexpected when considering the strengths and weaknesses of K-Means described in section \ref{subsec:method_kmeans}: contiguous, non-overlapping, convex clusters can be captured well while at least this representation of the data displays a lack of these characteristics in the data set.
 
 % \begin{itemize}
 % \item What are the results and how are they measured?
