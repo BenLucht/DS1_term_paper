@@ -10,7 +10,7 @@ def cluster_affinity(data, preference, returns='labels'):
 
   print(preference)
 
-  af = AffinityPropagation(preference=-7222, verbose=False, max_iter=1200).fit(data)
+  af = AffinityPropagation(preference, verbose=False, max_iter=1200).fit(data)
 
   if returns == 'labels':
     return af.labels_
