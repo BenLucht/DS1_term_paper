@@ -20,6 +20,6 @@ def cluster_spectral(data, k, returns='labels'):
   if returns == 'labels':
     return spectral_labels
   elif returns == 'labeled':
-    return np.c[data, spectral_labels]
+    return np.c_[data, spectral_labels]
   else:
     return spectral

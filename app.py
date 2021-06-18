@@ -11,6 +11,12 @@ from code.spectral.spectral import cluster_spectral
 from code.plotting.plotting import plot_tsne_2d, tsne_transform
 from code.evaluation.evaluation import get_indices
 
+st.set_page_config(
+    page_title="Clustering Term Paper",
+    layout="wide",
+    initial_sidebar_state="expanded",
+)
+
 # cached wrapper for tsne_transform function
 @st.cache
 def tsne_transform_2(data, state=None):
@@ -38,6 +44,7 @@ customers['gender'] = customers['gender'].map(convert_gender)
 housing = pd.read_csv('data/Boston-house-price-data.csv')
 
 redwine = pd.read_csv('data/winequality-red.csv')
+redwine = redwine[redwine.columns[:-1]]
 
 # calculate cached version of tsne transformed data 
 # to speed up interactions
@@ -102,7 +109,6 @@ def get_default_parameters(selected_data, algorithm):
         'spectral': [2, 8, 3],
         'affinity': [-10000, -50, -7000],
         'meanshift': [10, 40, 22]}[algorithm]
-
 
 def get_data(mode):
     if mode == 'regular':
@@ -172,10 +178,10 @@ with st.sidebar.beta_expander(label='Comparison', expanded=False):
     kmeans_parameter = st.slider('How many clusters would you like?', kmvals[0], kmvals[1], kmvals[2], key='kmeans_comparison')
     st.write('Mean Shift')
     meanshift_parameter = st.slider('Which bandwidth would you like to choose?', msvals[0], msvals[1], msvals[2], key='meanshift_comparison')
-    st.write('Spectral Clustering')
-    spectral_parameter = st.slider('How many clusters would you like?', spvals[0], spvals[1], spvals[2], key='spectral_comparison')
     st.write('Affinity Propagation')
     affinity_parameter = st.slider('Which preference would you like to choose?', afvals[0], afvals[1], afvals[2], key='affinity_comparison')
+    st.write('Spectral Clustering')
+    spectral_parameter = st.slider('How many clusters would you like?', spvals[0], spvals[1], spvals[2], key='spectral_comparison')
     
     run_comparison = st.button('Compare!')
 
