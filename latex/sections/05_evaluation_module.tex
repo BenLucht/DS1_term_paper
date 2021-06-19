@@ -80,28 +80,28 @@ In the following there is a discussion of the results of all clustering efforts 
 Data and Method & \multicolumn{1}{c}{\gls{CH}} & \multicolumn{1}{c}{\gls{DB}} & \multicolumn{1}{c}{\gls{SI}} & \multicolumn{1}{c}{\gls{DI}} \\ \hline
  &  &  &  &  \\
 \textbf{Housing} &  &  &  & \\
-K-Means & 1621.90 & 1.014 & 0.721 & 0.525 \\
-Mean Shift & 1.567 & 2.346 & 3.457 & 4.856 \\
-Affinity & 1.567 & 2.346 & 3.457 & 4.856 \\
-Spectral & 1.567 & 2.346 & 3.457 & 4.856 \\
+K-Means & 1621.90 & 0.326 & 0.721 & 0.525 \\
+Mean Shift & 1338.65 & 0.326 & 0.721 & 0.111 \\
+Affinity & 1803.31 & 0.350 & 0.372 & 0.185 \\
+Spectral & 1456.86 & 0.546 & 0.689 & 0.525 \\
  &  &  &  &  \\
 \textbf{Mall} &  &  &  &  \\
-K-Means & 301.02 & 0.901 & 0.479 & 0.843 \\
-Mean Shift & 1.567 & 2.346 & 3.457 & 4.856 \\
-Affinity & 1.567 & 2.346 & 3.457 & 4.856 \\
-Spectral & 1.567 & 2.346 & 3.457 & 4.856 \\
+K-Means & 301.02 & 0.766 & 0.479 & 0.843 \\
+Mean Shift & 921.29 & 0.103 & 0.438 & 0.905 \\
+Affinity & 314.89 & 0.282 & 0.371 & 0.382 \\
+Spectral & 262.82 & 0.731 & 0.454 & 0.087 \\
  &  &  &  &  \\
 \textbf{Seeds} &  &  &  &  \\
-K-Means & 369.55 & 0.979 & 0.492 & 0.091 \\
-Mean Shift & 1.567 & 2.346 & 3.457 & 4.856 \\
-Affinity & 1.567 & 2.346 & 3.457 & 4.856 \\
-Spectral & 1.567 & 2.346 & 3.457 & 4.856 \\
+K-Means & 369.55 & 0.691 & 0.492 & 0.091 \\
+Mean Shift & 374.19 & 0.689 & 0.519 & 0.113 \\
+Affinity & 374.12 & 0.642 & 0.529 & 0.086 \\
+Spectral & 335.58 & 0.638 & 0.525 & 0.107 \\
  &  &  &  &  \\
 \textbf{Wine} &  &  &  &  \\
-K-Means & 3116.82 & 0.901 & 0.603 & 0.049 \\
-Mean Shift & 1.567 & 2.346 & 3.457 & 4.856 \\
-Affinity & 1.567 & 2.346 & 3.457 & 4.856 \\
-Spectral & 1.567 & 2.346 & 3.457 & 4.856
+K-Means & 3116.82 & 0.617 & 0.603 & 0.049 \\
+Mean Shift & 1346.44 & 0.366 & 0.768 & 0.079 \\
+Affinity & 2633.03 & 0.927 & 0.261 & 0.041 \\
+Spectral & 2616.13 & 0.668 & 0.534 & 0.007
 \end{tabular}%
 %}
 \end{center}
@@ -110,7 +110,7 @@ Spectral & 1.567 & 2.346 & 3.457 & 4.856
 \end{table}
 
 
-\subsubsection{Seeds K-Means}
+\subsubsection{Seeds - K-Means}
 \textit{written by B.L.}\\
 
 \vspace{-0.5cm}
@@ -160,7 +160,75 @@ As mentioned in section \ref{sec:data_description} this dataset originally comes
 %as shown in table \ref{tab:k-means_seeds_table} data on how many clusters to choose not clear
 %looking at chart in \ref{fig:kmeans_seeds_indices_plot} makes comparison easier. shows \gls{CH} with significant signal at three clusters and \gls{DI} flattening out after three clusters while \gls{SI} falling after three clusters. only \gls{DB} highest at seven clusters. in light of this analysis it doesn't seem unreasonable to select three clusters as the best fit. looking at the data in 3d, see figure
 
-\subsubsection{Mall Customers K-Means}
+\subsubsection{Seeds - Mean Shift}
+\textit{written by L.B.}\\ 
+
+In the following two plots, values for the chosen cluster validation indexes are provided that evaluate the clustering result generated applying the Mean Shift algorithm on the Seeds dataset for a range of bandwidth parameters.
+To determine suitable bandwidth parameter values, ideally SI, DI and CH should be maximized while DB should be at a minimum. 
+By the way those scores are computed, it is not that easy to reach this goal.
+\newline
+\begin{figure}[!ht]
+\caption{Cluster Validation Indexes: Means Shift on Seeds}
+\begin{center}
+\includegraphics[width=0.8\textwidth]{images/Meanshift_-_Seeds.pdf}
+\end{center}
+\end{figure}
+Taking a look at DI, CH and DB, one might choose a bandwidth of 0.2 which indeed results in a very high number of small clusters and does not seem to represent a natural structure within the dataset as can be seen in Figure \ref{fig:meanshift_seeds_tsne}.
+\begin{figure}[!ht]
+    \centering
+    \includegraphics[width=0.5\textwidth]{images/Meanshift_Seeds_0_2.png}
+    \label{fig:meanshift_seeds_tsne}
+    \caption{tSNE projected result of Mean Shift with bandwidth = 0.2 on Seeds dataset}
+\end{figure}
+\newline
+Instead, a balance between high values for DI, SI, CH and a low value for DB is found for bandwidth values of 2 or 2.5 which results in two respectively three distinct clusters (Figure \ref{fig:meanshift_seeds_2_tsne}). 
+\begin{figure}[!ht]
+    \subfigure{\includegraphics[width=0.49\textwidth]{images/Meanshift_Seeds_2.png}}
+    \subfigure{\includegraphics[width=0.49\textwidth]{images/Meanshift_Seeds_2_5.png}}
+    \label{fig:meanshift_seeds_2_tsne}
+    \caption{tSNE projected result of Mean Shift with bandwidth = 2 (left) and bandwidth = 2.5 (right)w on Seeds dataset}
+\end{figure}
+\newline
+As the dataset is labeled (see section 5.5.1), a comparison with the original labels would probably support choosing a bandwidth parameter value of 2.
+
+\subsubsection{Seeds - Affinity Propagation}
+\textit{written by J.M.}\\
+
+\begin{figure}[!ht]
+	\caption{TSNE plot of Affinity Propagation on Seeds dataset}
+	\begin{center}
+		\includegraphics[width=0.5\textwidth]{images/af_seed78.png}
+	\end{center}
+	\label{fig:af_seeds78}
+\end{figure}
+
+\begin{figure}[!ht]
+	\caption{TSNE plot of Affinity Propagation on Seeds dataset}
+	\begin{center}
+		\includegraphics[width=0.5\textwidth]{images/af_seeds247.png}
+	\end{center}
+	\label{fig:af_seeds2}
+\end{figure}
+
+On the seeds Dataset it performs good. And it finds some good cluster. Depending on the parameter more or less cluster are created which are shown \ref{fig:af_seeds78} and \ref{fig:af_seeds2}. In \ref{fig:af_seeds78} that input parameter is -78. It’s a very low compared to the parameter that are used in the other datasets. If this parameter gets lower, affinity propagation will create less cluster like in\ref{fig:af_seeds2}. In this figure the parameter is -247. If you compare the cluster validation metrics on these two plots, you can see that the second plot is better in all cluster validation metrics. If we look to other parameters, we don’t find new insights, the parameter -247 is quite optimal for this dataset. 
+
+\begin{table}[h!]
+	\centering
+	\begin{tabular}{||c c c ||} 
+		\hline
+		custer validation & plot1 & plot2 \\ [0.5ex] 
+		\hline\hline
+		Calinski-Harabasz & 302.7425	 &  374.6137  \\ 
+		Davies-Bouldin & 0.8784	 & 0.7544	 \\
+		Silhouette & 0.3644	 & 0.4681	 \\
+		Dunn & 0.0489 & 0.0495  \\ [1ex] 
+		\hline
+	\end{tabular}
+	\caption{Comparision Cluster validation Affinity Propagation }
+	
+\end{table}
+
+\subsubsection{Mall Customers - K-Means}
 \textit{written by B.L.}\\
 
 As one of the features is categorical (gender), this is not an ideal application of the K-Means clustering method. The categories can be resolved into discrete values so that calculations can be run, but the arbitrary nature of this does not really allow for good interpretation of the results. An exemplary three dimensional plot \ref{fig:kmeans_customers_3d} shows the issue: 
@@ -196,7 +264,61 @@ The dataset contains four features, three of which have a measurable and interpr
 
 %Rotating the plot shows that both partitions contain very similar clusters but due to the way K-Means works they are not recognized as the same. The data shows either two clusters (simply male cluster and female cluster) or an ideal number of clusters double the amount perceived by a human to be reasonable.
 
-\subsubsection{Housing K-Means}
+\subsubsection{Mall Customers - Mean Shift}
+\textit{written by L.B.}\\
+
+The influence of different bandwidth parameter values for the application of Mean Shift on the Mall dataset can be seen in Figure \ref{fig:meanshift_mall}.
+
+\begin{figure}[!ht]
+\caption{Cluster Validation Indexes: Mean Shift on Mall Customers}
+\begin{center}
+\includegraphics[width=0.8\textwidth]{images/Meanshift_-_Mall_Customers.pdf}
+\end{center}
+\label{fig:meanshift_mall}
+\end{figure}
+Again, as for the Seeds dataset, ignoring SI and only trying to maximize DI and CH while minimizing DB, one might choose a bandwidth of 4.6. But again, this rather introduces artifacts than reflecting any natural structures (Figure \ref{fig:meanshift_mall_4_6}).
+
+\begin{figure}[!ht]
+\caption{tSNE projected result of Mean Shift with bandwidth = 0.2 on Mall Customers dataset}
+\begin{center}
+\includegraphics[width=0.5\textwidth]{images/Meanshift_Mall_4_6.png}
+\end{center}
+\label{fig:meanshift_mall_4_6}
+\end{figure}
+
+A more suitable clustering result is generated using a bandwidth of 27.5 (Figure \ref{fig:meanshift_mall_27}). In the plot, one can see that this value compensates between all four indexes.
+When taking a look at the clustering result, there still are some data points which do not seem to be clustered correctly. One possible explanation concerns concerns the gender column which is encoded as 0 and 1 (see section 5.5.2). It is not possible to calculate a meaningful distance between genders which may have an influence on the clustering result. 
+
+\begin{figure}[!ht]
+\caption{tSNE projected result of Mean Shift with bandwidth = 27.5 on Mall Customers dataset}
+\begin{center}
+\includegraphics[width=0.5\textwidth]{images/Meanshift_Mall_27_5.png}
+\end{center}
+\label{fig:meanshift_mall_27}
+\end{figure}
+
+\subsubsection{Mall Customers - Affinity Propagation}
+\textit{written by J.M.}\\
+
+ \begin{figure}[!ht]
+ 	\caption{TSNE plot of Affinity Propagation on Mall Customers dataset}
+ 	\begin{center}
+ 		\includegraphics[width=0.5\textwidth]{images/af_mallcustomers2870.png}
+ 	\end{center}
+ 	\label{fig:af_mall1}
+ \end{figure}
+ 
+ \begin{figure}[!ht]
+ 	\caption{TSNE plot of Affinity Propagation on Mall Customers dataset}
+ 		\begin{center}
+ 			\includegraphics[width=0.5\textwidth]{images/af_mallcustomers8778.png}
+ 		\end{center}
+ 		\label{fig:af_mall2}
+ 	\end{figure}
+ 
+On the customers Dataset it also performs good, but for this dataset the parameter is smaller as for the seeds dataset. In \ref{fig:af_mall1} it computed with -2870. Here you see that the Clustering is not good, there exists many clusters. To check if this algorithm works with this dataset the parameter is change to a parameter where to clusters look good. This happened when the parameter is around 8778. This plot is in \ref{fig:af_mall2}. If you compare these two plots with the cluster validation indexes, it confirms the obvious the \ref{fig:af_mall2} is better. This parameter is also near to the optimum for this dataset. 
+
+\subsubsection{House Pricing - K-Means}
 \textit{written by B.L.}\\
 
 This dataset is challenging for K-Means clustering due to the high number of features. As described in section \ref{subsec:method_kmeans} the concept of distance does not hold up well in high dimensional cases. Attempts to transform the data into lower dimensional representations through principle component analysis did not yield an improvement in clustering performance. Data in figure \ref{fig:kmeans_housing_indices_plot} suggests to consider 2 (\gls{DI}), 3 (\gls{SI}, \gls{DB}) or 4 (\gls{CH}) clusters.
@@ -221,27 +343,78 @@ Due to the high dimensionality of the data, looking at different angles in three
 \end{figure}
 \vspace{-0.5cm}
 
-\subsubsection{Wine K-Means}
+\subsubsection{House Pricing - Mean Shift}
+\textit{written by L.B.}\\
+
+The third dataset the Mean Shift algorithm was applied on is the Boston House Pricing dataset. In contrast to the Seeds and the Mall Customers dataset, it contains fourteen columns and hence requires the handling of fourteen dimensions. As mentioned in section 2.3, runtime results in a complexity of $O(n^{3})$ in high dimensions. 
+Nevertheless, Mean Shift seems to be able to handle the dataset and produces reasonable clustering results. 
+
+\begin{figure}[!ht]
+\caption{Cluster validation indexes: Mean Shift on House Pricing dataset}
+\begin{center}
+\includegraphics[width=0.8\textwidth]{images/Meanshift_-_Housing.pdf}
+\end{center}
+\label{fig:meanshift_housing_indexes}
+\end{figure}
+
+In Figure \ref{fig:meanshift_housing_indexes} one can clearly see a maximum of DI, SI and CH and at the same time a minimum for DB in the range of 118 to 156 or between 159 and 185. All of the four chosen cluster validation indexes do change for either of the values within the mentioned ranges. This is due to the large distance between data points of the red cluster and the remaining datapoints as it can be seen in Figure \ref{fig:meanshift_housing_120}.
+
+\begin{figure}[!ht]
+\caption{tSNE projected result of Mean Shift with bandwidth = 120 on House Pricing dataset}
+\begin{center}
+\includegraphics[width=0.5\textwidth]{images/Meanshift_Housing_120.png}
+\end{center}
+\label{fig:meanshift_housing_120}
+\end{figure}
+
+The bandwidth value determines the kernel's radius and thus influences which values are considered for which cluster. If data points are far away from each other, as it is the case for the Boston House Pricing dataset, increasing the bandwidth parameter will not include any more data points within the kernel's radius and thus not have an influence on the cluster generation. 
+
+Furthermore, the dataset consists of three relatively dense regions far away from each other, which is a desirable situation when applying density-based clustering algorithms. Due to this, Mean Shift algorithms performs well on the dataset, even if it is high-dimensional.
+
+\subsubsection{House Pricing - Affinity Propagation}
+\textit{written by J.M.}\\
+
+On the house - pricing dataset affinity propagation performs not good. It takes some time to find a good parameter for this dataset. This is shown in  \ref{fig:af_house1}. The parameter for this plot wars -71433. This parameter is so low because this dataset has the most dimensions. If you use a higher parameter the cluster is not so good. This is shown in \ref{fig:afhouse2}.   
+
+\begin{figure}[H]
+	\caption{TSNE plot of Affinity Propagation on House Pricing dataset}
+		\begin{center}
+			\includegraphics[width=0.5\textwidth]{images/af_housepricing71433.png}
+		\end{center}
+		\label{fig:af_house1}
+	\end{figure}
+	
+	\begin{figure}[H]
+		\caption{TSNE plot of Affinity Propagation on House Pricing dataset}
+			\begin{center}
+				\includegraphics[width=0.5\textwidth]{images/af_housepricing6900.png}
+			\end{center}
+			\label{fig:afhouse2}
+		\end{figure}
+
+\subsubsection{Wine Quality - K-Means}
 \textit{written by B.L.}\\
 
-The wine dataset again presents a challenge due to its high feature count, the highest of all the datasets in this comparison as well as having one discrete feature. Dimensionality reduction helps to speed up calculation but does not show an improvement in evaluation index performance. The plot of evaluation indices in figure \ref{fig:kmeans_wine_indices_comparison} gives an indication for 2 (\gls{SI}, \gls{DB}), 3 (\gls{CH}), or 6 (\gls{CH}, \gls{DB}) clusters
+The wine data set again presents a challenge due to its high feature count, the highest of all the data sets in this comparison as well as having one discrete feature. Dimensionality reduction helps to speed up calculation but does not show an improvement in evaluation index performance. The plot of evaluation indices in figure \ref{fig:kmeans_wine_indices_comparison} gives an indication for 2 (\gls{SI}, \gls{DB}), 3 (\gls{CH}), or 6 (\gls{CH}, \gls{DB}) clusters
 
 \vspace{-0.5cm}
 \begin{figure}[h]
-\caption{K-Means Wine Dataset Indices by Number of Clusters}
+\caption{K-Means Wine Data Set Indices by Number of Clusters}
 \begin{center}
 \includegraphics[width=1.0\textwidth]{images/kmeans_wine_index_plot.pdf}
 \end{center}
 \label{fig:kmeans_wine_indices_comparison}
 \end{figure}
 
-but looking at the two dimensional transformed data in figure \ref{fig:kmeans_wine_tsne} does not allow for any visual evaluation concerning the quality of fit.
+but looking at the two dimensional transformed data in figure \ref{fig:kmeans_wine_tsne} for three and six clusters compared to the original labeling does not allow for any interpretation due to the fact that little about structure - if it exists - can be learned from the original labels.
+
+%does not allow for any visual evaluation concerning the quality of fit.
 
 %The result is inconclusive and without a focus on feature engineering other methods may be better suited to deal with this dataset.
 
 
 \begin{figure}[H]
-\caption{K-Means Wine Dataset Indices by Number of Clusters}
+\caption{K-Means Wine Data Set Indices by Number of Clusters}
 \begin{center}
 \includegraphics[width=1.0\textwidth]{images/kmeans_wine_tsne.pdf}
 \end{center}
@@ -252,7 +425,7 @@ Looking back at the PCA step mentioned before, the picture becomes clearer when 
 
 \vspace{-0.5cm}
 \begin{figure}[H]
-\caption{Wine Dataset 3D Plot Clustering Options}
+\caption{Wine Data Set 3D Plot Clustering Options}
 \centering
 \includegraphics[width=1.0\textwidth]{images/kmeans_wine_3d_multi.pdf}
 \label{fig:kmeans_wine_3d_multi}
@@ -265,8 +438,68 @@ Looking back at the PCA step mentioned before, the picture becomes clearer when 
   \label{fig:kmeans_wine_pca_original}
   \caption{Wine 3D Original Labeling}
 \end{wrapfigure}
+
 Looking at the original labeling of the data however shows the limitations of clustering and especially K-Means clustering for this data set. Figure \ref{fig:kmeans_wine_pca_original} shows the same projection as figure \ref{fig:kmeans_wine_3d_multi} but this time with the original labeling. The math on accuracy and recall at 19.8\% and precision somewhat better at 58.2\% also shows the less than optimal performance. However this is not unexpected when considering the strengths and weaknesses of K-Means described in section \ref{subsec:method_kmeans}: contiguous, non-overlapping, convex clusters can be captured well while at least this representation of the data displays a lack of these characteristics in the data set.
 
+
+\subsubsection{Wine Quality - Mean Shift}
+\textit{written by L.B.}\\
+
+Applying Mean Shift algorithm on the last dataset shows that density-based clustering is also able to identify non-convex clusters. The following plots demonstrate how Mean Shift clustering performed on the Redwine Quality dataset along different values for the required bandwidth parameter.
+
+\begin{figure}[!ht]
+\caption{Cluster validation indexes: Mean Shift on Redwine Quality}
+\begin{center}
+\includegraphics[width=0.8\textwidth]{images/Meanshift_-_Red_Wine.pdf}
+\end{center}
+\label{fig:meanshift_wine_indexes}
+\end{figure}
+
+The cluster validation indexes suggest that a bandwidth parameter of 22.5 generates the best clustering results. However, the overall performance on this dataset is worse compared to the House Pricing dataset, even if it consists of less dimensions. This is the case as data points of the Wine Quality dataset lie relatively close together and no distant and clearly separated dense regions can be identified (Figure \ref{fig:meanshift_wine_22_5}. 
+
+\begin{figure}[!ht]
+\caption{tSNE projected result of Mean Shift with bandwidth = 22.5 on Redwine Quality dataset}
+\begin{center}
+\includegraphics[width=0.5\textwidth]{images/Meanshift_Wine_22_5.png}
+\end{center}
+\label{fig:meanshift_wine_22_5}
+\end{figure}
 % \begin{itemize}
 % \item What are the results and how are they measured?
 % \end{itemize}
+
+\subsubsection{Wine Quality - Affinity Propagation}
+\textit{written by J.M.}\\
+
+One the wine dataset affinity propagation works not good. The calculation to build cluster needs significantly longer because this dataset has more datapoints than the other datasets. After it computes the clusters it builds many clusters.  \ref{fig:af_wine1} show a plot of the clustering. There are many cluster in it. The parameter for this examples wars – 6264. It don’t work a good as the same reason as the house pricing dataset, because the dimensions are very high. The Silhouette Index is also low, only 0.32. 
+
+\begin{figure}[!ht]
+	\caption{TSNE plot of Affinity Propagation on Wine Quality dataset}
+	\begin{center}
+		\includegraphics[width=0.5\textwidth]{images/af_wine6533.png}
+	\end{center}
+	\label{fig:af_wine1}
+\end{figure}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
