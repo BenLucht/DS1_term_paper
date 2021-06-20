@@ -17,6 +17,8 @@
 
 % make numbers in circles: https://tex.stackexchange.com/questions/7032/good-way-to-make-textcircled-numbers
 \usepackage{tikz}
+\usetikzlibrary{shapes.misc}
+
 \newcommand*\circled[1]{\tikz[baseline=(char.base)]{
             \node[shape=circle,draw,inner sep=1pt] (char) {#1};}}
 % alternative to that: \raisebox{.5pt}{\textcircled{\raisebox{-.9pt} {8}}}

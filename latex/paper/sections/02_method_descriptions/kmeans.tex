@@ -48,15 +48,87 @@ where each of the numbers \circled{1} to \circled{4} refer to a topic mentioned 
 
 Clustering with the described method is fast, commonly requiring fewer iterations than observations \cite{har2005fast}. The naive upper bound is trivially $\mathcal{O}(K^{n})$ (trying every possible configuration), with \cite{arthur2006slow} showing worst case run time to be superpolynomial ($\mathcal{O}(m^{(K+2/n)})$) with common runtimes being polynomial.
 
-\circled{1} Initial placement of the centroids can be achieved in different ways. The most basic method is placing them at random. On singular runs of the algorithm this can lead to problems as can be seen in the example in figure \ref{img:k_means_bad_init}.
+\circled{1} Initial placement of the centroids can be achieved in different ways. The most basic method is placing them at random. On singular runs of the algorithm this can lead to problems as can be seen in the example in figure \ref{img:k_means_bad_init}. From a visual standpoint there should be three clusters, one to the left containing four observations, one in the middle containing two observations and one to the right with five observations. Initial random placement has resulted in two initial centroids far to the left and one near the center of the feature space. Performing the steps as described results in a final clustering of one cluster containing a single observation to the left, another comprising three observations also near the left and one big cluster with seven observations from two visually separated segments of the data. This is a valid result meeting stopping criteria but it is not meeting the expectations. Different starting positions can lead to different clustering results.
 
 \begin{figure}[h]
-\caption{Example with 1 dimension and 10 points bad starting position}
+\centering
 %\includegraphics[width=0.6\textwidth]{something}
+\resizebox{0.9\textwidth}{!}{
+\begin{tikzpicture}[
+dot/.style = {circle, fill=black,inner sep=0pt, minimum 
+size=6pt},
+bigdot/.style = {circle, fill=black, opacity=1, inner sep=0pt, minimum size=10pt},
+every label/.append style = {inner sep=0pt, rotate around={45:(-0.5,1.5)}},
+    thick      
+                        ]
+%spacing top
+\draw[thick, opacity=0] (0,1) -- + (21,0);
+%
+
+% first line
+\draw[thick] (0,0) -- node[below=4mm] {Initial Random Centroid Placement} + (21,0);
+%
+\foreach \p in {2, 3, 4, 4.5, 10, 11, 16, 17, 18, 19, 20}
+{
+    \node[dot] at (\p,0) {};
+}
+
+% first line centroids
+\draw ( 1,0.0) -- + (0,-0.0) node[bigdot, fill=red] {};
+\draw ( 3.5,0.0) -- + (0,-0.0) node[bigdot, fill=green] {};
+\draw (12,0.0) -- + (0,-0.0) node[bigdot, fill=blue] {};
+
+% second line
+\draw[thick] (0,-2) -- node[below=4mm] {Assignment of Observations to Centroids} + (21,0);
+
+%second line centroids
+\draw ( 1,-2) -- + (0,-0.0) node[bigdot, fill=red] {};
+\draw ( 3.5,-2) -- + (0,-0.0) node[bigdot, fill=green] {};
+\draw (12,-2) -- + (0,-0.0) node[bigdot, fill=blue] {};
+
+\draw ( 2,-2) -- + (0,-0.0) node[dot, fill=red] {};
+
+\draw ( 3,-2) -- + (0,-0.0) node[dot, fill=green] {};
+\draw ( 4,-2) -- + (0,-0.0) node[dot, fill=green] {};
+\draw (4.5,-2) -- + (0,-0.0) node[dot, fill=green] {};
+
+\draw (10,-2) -- + (0,-0.0) node[dot, fill=blue] {};
+\draw (11,-2) -- + (0,-0.0) node[dot, fill=blue] {};
+
+\draw (16,-2) -- + (0,-0.0) node[dot, fill=blue] {};
+\draw (17,-2) -- + (0,-0.0) node[dot, fill=blue] {};
+\draw (18,-2) -- + (0,-0.0) node[dot, fill=blue] {};
+\draw (19,-2) -- + (0,-0.0) node[dot, fill=blue] {};
+\draw (20,-2) -- + (0,-0.0) node[dot, fill=blue] {};
+
+% third line
+\draw[thick] (0,-4) -- node[below=4mm] {Relocating Centroids (Already Final)} + (21,0);
+
+% third line centroids
+\draw ( 2,-4) -- + (0,-0.0) node[bigdot, fill=red] {};
+\draw ( 3.75,-4) -- + (0,-0.0) node[bigdot, fill=green] {};
+\draw (15,-4) -- + (0,-0.0) node[bigdot, fill=blue] {};
+
+\draw ( 3,-4) -- + (0,-0.0) node[dot, fill=green] {};
+\draw ( 4,-4) -- + (0,-0.0) node[dot, fill=green] {};
+\draw (4.5,-4) -- + (0,-0.0) node[dot, fill=green] {}; 
+
+\draw (10,-4) -- + (0,-0.0) node[dot, fill=blue] {};
+\draw (11,-4) -- + (0,-0.0) node[dot, fill=blue] {};
+
+\draw (16,-4) -- + (0,-0.0) node[dot, fill=blue] {};
+\draw (17,-4) -- + (0,-0.0) node[dot, fill=blue] {};
+\draw (18,-4) -- + (0,-0.0) node[dot, fill=blue] {};
+\draw (19,-4) -- + (0,-0.0) node[dot, fill=blue] {};
+\draw (20,-4) -- + (0,-0.0) node[dot, fill=blue] {};
+
+\end{tikzpicture}
+}
+\caption{One Dimension With Ten Observations - Bad Starting Positions}
 \label{img:k_means_bad_init}
 \end{figure}
-
-It can be seen that this initial placement does allow for \textit{a} clustering in the end, though it does not achieve what a human would describe as a fitting result. In two ways a solution to this problem can lie in repeating the method multiple times with different initialization. Firstly a new placement of initial centroids can lead to different clustering results which can be more fitting to the observer and secondly introducing a measure of fit and comparing it across runs to select the clustering that maximizes (minimizes) the measure can objectivize the selection of the "best" clustering. Commonly used as a measure are SSE and intra-cluster variance themselves, while other methods will be discussed more thoroughly in section \ref{sec:evaluation_description}. The repetition of clustering can therefore alleviate some problems introduced by randomly selecting starting points.
+%It can be seen that this initial placement does allow for \textit{a} clustering in the end, though it does not achieve what a human would describe as a fitting result. 
+In two ways a solution to this problem can lie in repeating the method multiple times with different initialization. Firstly a new placement of initial centroids can lead to different clustering results which can be more fitting to the observer and secondly introducing a measure of fit and comparing it across runs to select the clustering that maximizes (minimizes) the measure can objectivize the selection of the "best" clustering. Commonly used as a measure are SSE and intra-cluster variance themselves, while other methods will be discussed more thoroughly in section \ref{sec:evaluation_description}. The repetition of clustering can therefore alleviate some problems introduced by randomly selecting starting points.
 
 While computational capabilities are ever growing and trying more initializations should provide a higher chance of achieving better clustering results, it may still be useful to attempt improving on pure randomness.
 
