@@ -1,4 +1,4 @@
-Due to the nature of clustering as an unsupervised machine learning method, it is typically applied to datasets lacking prior information on grouping. Therefore measuring the performance of each method can only be performed on the data and the labeling produced by each clustering algorithm. These types of calculations are commonly called \textit{internal cluster validation} indices.
+Due to the nature of clustering as an unsupervised machine learning method, it is typically applied to data sets lacking prior information on grouping. Therefore measuring the performance of each method can only be performed on the data and the labeling produced by each clustering algorithm. These types of calculations are commonly called \textit{internal cluster validation} indices.
 
 Differentiating by the way compactness and separation are measured \cite{balbi2016cosine} split indices into two groups. There are graph based indices: C Index, Dunn, Gamma, G+, McClain-Rao, Point Biserial, Silhouette, Tau, and there are prototype based indices: Calinski-Harabasz, Davies-Bouldin, Pakhira-Bandyopadhyay-Maulik (PBM), Ratkowski-Lance, Ray-Turi, Xie-Beni, Wemmert-Gancarski. 
 
@@ -10,15 +10,34 @@ We have decided to use two indices from each group: \gls{DI} and \gls{SI}, \gls{
 
 % Dunn \cite{dunn1974well} brief explanation and reasons.
 
-The Dunn Index (in short DI) is a metric for evaluating clustering algorithms. Its aim is to identify sets of clusters \cite{dunn2016rizzo}. It is used for measuring an internal validation of clustering results \cite{BENNCIR2021102751}. \newline
+The Dunn Index (DI) is an internal cluster validity index. That means the clustering result is evaluated based on the data clustered itself (internal information) without reference to external information. Like other indices the Dunn Index is needed to compare clustering algorithms, sets of clusters and to compare two clusters to conclude which one is better in terms of compactness and connectedness \cite{dunn-website}.
+The Dunn Index is defined as: \newline
 
-For each cluster, compute the distance between each of the objects in the cluster and the objects in the other clusters. Use the minimum of this pairwise distance as the inter-cluster separation (min. separation). For each cluster, compute the distance between the objects in the same cluster. Use the maximal intra-cluster distance (i.e maximum diameter) as the intra-cluster compactness. Calculate the Dunn index (D) as follow: \newline
+\includegraphics[width=0.7\textwidth]{images/dunn.png}
+    
+While $d(c_{i},c_{j}$) defines the intercluster distance between cluster $d(X_{i},X_{j}$) represents the intracluster distance of cluster $X_{k}$. \newline
+$C$ is the number of cluster of dataset.
+Large values of index Dunn correspond to good clustering results, since higher values indicate that clusters are compact \cite{ballarin2015cluster}.The main disadvantage of the Dunn Index is that the calculation of the index is time consuming. Additionally, the index is very sensitive to noise, as the maximum cluster diameter can be large in a noisy environment \cite{ballarin2015cluster,rendon2011internal}. \newline
 
-D = $\frac{min.separation}{max.diameter}$ \cite{BENNCIR2021102751} \newline
+To sum up, the Dunn index can be computed with following steps [4]:\newline
+    1.	For each cluster, compute the distance between each of the objects in the cluster and the objects in the other clusters \newline
+    2.	Use the minimum of this pairwise distance as the inter-cluster separation (min.separation) \newline
+    3.	For each cluster, compute the distance between the objects in the same cluster. \newline
+    4.	Use the maximal intra-cluster distance (i.e maximum diameter) as the intra-cluster compactness \newline
+    5.	Calculate the Dunn index (D) as follow: \newline
 
-The higher the value of the resulting Dunn index, the better the clustering
-result is considered, since higher values indicate that clusters are Compact.
-That means the greater the better \cite{dunnblog2019rizzo}.
+    D = $\frac{min.separation}{max.diameter}$ \cite{dunn-website-2} \newline
+
+If the result shows compact and well-separated clusters the diameter of the clusters is expected to be small and the distance between the clusters is expected to be large. For our evaluation we use the implementation from \gls{sklearn}.
+
+%%%%%
+%The Dunn Index (in short DI) is a metric for evaluating clustering algorithms. Its aim is to identify sets of clusters \cite{dunn2016rizzo}. It is used for measuring an internal validation of clustering results \cite{BENNCIR2021102751}. \newline
+
+%For each cluster, compute the distance between each of the objects in the cluster and the objects in the other clusters. Use the minimum of this pairwise distance as the inter-cluster separation (min. separation). For each cluster, compute the distance between the objects in the same cluster. Use the maximal intra-cluster distance (i.e maximum diameter) as the intra-cluster compactness. Calculate the Dunn index (D) as follow: \newline
+
+%D = $\frac{min.separation}{max.diameter}$ \cite{BENNCIR2021102751} \newline
+
+%The higher the value of the resulting Dunn index, the better the clustering result is considered, since higher values indicate that clusters are Compact. That means the greater the better \cite{dunnblog2019rizzo}.
 
 \subsection{Calinski-Harabasz Index}
 \textit{written by B.L.}\\
@@ -27,9 +46,9 @@ The Calinski-Harabasz criterion \cite{calinski1974dendrite} is defined as a popo
 \begin{equation}
         CH = \frac{S_{B}}{S_{W}}\frac{m-K}{K-1} = \frac{\sum_{k=1}^{K} \left | C_{k} \right | \left \| c_{k} - \sum_{x' \in X}^{} x' \right \|^{2}}{\sum_{k=1}^{K}\sum_{x \in C_{k}}^{} \left \| x - c_{i} \right \|^{2}} \frac{m-K}{K-1}
 \end{equation}
-utilizing the same notation as equation \ref{eq:kmeans_basic_other}. Between-cluster variance is divided by within-cluster variance. Dividing the data into more partitions of course reduces within-cluster variance, which is why there is also a scaling factor (second fraction representing degrees of freedom) to account for it. In comparison to \gls{DB} between-cluster variance is calculated in relation to the center of the data set in place of between individual cluster centers themselves. 
+utilizing the same notation as equation \ref{eq:kmeans_basic_other}. Between-cluster variance is divided by within-cluster variance. Dividing the data into more partitions of course reduces within-cluster variance, which is why there is also a scaling factor (second fraction representing degrees of freedom) to account for it. In comparison to \gls{DB} between-cluster variance is calculated in relation to the center of the data set in place of between individual cluster centers themselves. There is no upper limit to the value that can be achieved. A higher value is considered to be better.
 
-Due to its construction (distance measure) this index performs well when clusters form mostly convex shapes. This can lead to mis-evaluation if the underlying data does not comprise of such globular clusters so a method capturing this might score lower while actually fitting the data better. It may therefore be better suited to compare different parameters for the same algorithm instead of comparing different algorithms. A comparative study of 30 cluster validation indices \cite{arbelaitz2013extensive} ranks \gls{CH} performance in evaluating fit near the top in many applications, particularly when evaluating K-Means results as expected.
+Due to its construction (distance measure) this index performs well when clusters form mostly convex shapes. This can lead to mis-evaluation if the underlying data does not contain such globular clusters so a method capturing this might score lower while actually fitting the data better. It may therefore be better suited to compare different parameters for the same algorithm instead of comparing different algorithms. A comparative study of 30 cluster validation indices \cite{arbelaitz2013extensive} ranks \gls{CH} performance in evaluating fit near the top in many applications, particularly when evaluating K-Means results as expected.
     
     
 \subsection{Davies-Bouldin Index}
@@ -58,14 +77,14 @@ For our evaluation we use the implementation from sklearn of this metric. This m
 \textit{written by L.B.}\\
 
 Cluster validation indexes are used to assess clustering quality. That means it is investigated whether the resulting clusters reflect natural structures in the data or whether clusters rather determine artificial groups. In general, the ratio of dissimilarity between data points within the same cluster to dissimilarity between data points in different clusters is a measurement for clustering quality. 
-The Silhouette Score is one of such cluster validation indexes which can be applied to evaluate clustering results if Euclidean distance measures can be calculated on the underlying dataset. According to that, a clustering result as well as proximity scores between all data points have to be provided to be able to apply the Silhouette Score. 
+The Silhouette Score is one of such cluster validation indexes which can be applied to evaluate clustering results if Euclidean distance measures can be calculated on the underlying data set. According to that, a clustering result as well as proximity scores between all data points have to be provided to be able to apply the Silhouette Score. 
 For a single data point, distances to all the data points assigned to the same cluster are calculated. Here, the mean of all these distances is called \textit{a}. After that, the nearest cluster for each data point has to be found. This can be done by iteratively calculating the mean of distances between the single data point and all data points within another cluster until distances for all clusters have been computed. The minimum average distance determines the nearest cluster for the single data point. 
 The minimum average distance is called \textit{b} here. The Silhouette Score for data point i is calculated using the following formula:
 \begin{align*}
 	s(i)=\frac{b - a}{max(a, b)}.
 \end{align*}
-The mean of all the Silhouette Scores for each individual data point determines the Silhouette Score for the whole dataset. As the nearest cluster has to be found for each of the included data points, the Silhouette Score can only be computed as soon as more than one cluster exists \cite{rousseeuw1987silhouettes}.
-Taking a closer look at extreme cluster results determines how to interpret the Silhouette Score values. Given a partition where the mean intra-cluster distance \textit{a} is extremely low while the mean inter-cluster distance \textit{b} is high, the Silhouette Score would tend to be \mintinline[bgcolor=code-bg]{python}{1}. Hence, a Silhouette Score of \mintinline[bgcolor=code-bg]{python}{1} corresponds to a well-partitioned dataset because the mean of distances between single points and other clusters than the one it is assigned to is large. Analogously, a value of \mintinline[bgcolor=code-bg]{python}{-1} corresponds to a partition where the inter-cluster distance \textit{b} is much larger than the intra-cluster distance \textit{a}. Thus, the data points are not assigned to their nearest clusters, resulting in a misclassification. If the Silhouette Score is equal to zero, means of inter- and intra-cluster distances are close to each other and it is unclear which cluster the point should be assigned to. In this case, the partition can also contain overlapping clusters \cite{rousseeuw1987silhouettes}.
+The mean of all the Silhouette Scores for each individual data point determines the Silhouette Score for the whole data set. As the nearest cluster has to be found for each of the included data points, the Silhouette Score can only be computed as soon as more than one cluster exists \cite{rousseeuw1987silhouettes}.
+Taking a closer look at extreme cluster results determines how to interpret the Silhouette Score values. Given a partition where the mean intra-cluster distance \textit{a} is extremely low while the mean inter-cluster distance \textit{b} is high, the Silhouette Score would tend to be \mintinline[bgcolor=code-bg]{python}{1}. Hence, a Silhouette Score of \mintinline[bgcolor=code-bg]{python}{1} corresponds to a well-partitioned data set because the mean of distances between single points and other clusters than the one it is assigned to is large. Analogously, a value of \mintinline[bgcolor=code-bg]{python}{-1} corresponds to a partition where the inter-cluster distance \textit{b} is much larger than the intra-cluster distance \textit{a}. Thus, the data points are not assigned to their nearest clusters, resulting in a misclassification. If the Silhouette Score is equal to zero, means of inter- and intra-cluster distances are close to each other and it is unclear which cluster the point should be assigned to. In this case, the partition can also contain overlapping clusters \cite{rousseeuw1987silhouettes}.
 For the calculations of Silhouette Scores, we utilize the implementation provided from sklearn \cite{sklearn_api}.
 We make use of the Silhouette Score as it can be applied on cluster results generated with any clustering technique. It therefore provides an intuitive way of comparing the results of different algorithms to each other. One disadvantage is that Silhouette Scores are higher for convex clusters. As some density-based clustering algorithms, like Mean Shift or Spectral Clustering, explicitly allow the creation of non-convex clusters, the obtained Silhouette Scores could possibly be lower than results created applying other clustering techniques.
 %\item Gap \cite{tibshirani2001estimating} brief explanation and reasons.
@@ -134,26 +153,25 @@ $K$ & \multicolumn{1}{c}{\gls{CH}} & \multicolumn{1}{c}{\gls{DB}} & \multicolumn
 \label{tab:kmeans_seeds_table}
 \end{table}
 
-Table \ref{tab:kmeans_seeds_table} contains the index scores for each of the indices selected as columns and the number of clusters as rows. An easier representation of this data is a line chart which can be seen in figure \ref{fig:kmeans_seeds_comparison_plot} and in the following description of results. More than simply a tool to compare scores between methods, these can help in identifying the number of clusters (or other parameters below) best fit to represent the data. So what can be learned from the data: If there is a clear maximum (minimum for \gls{DB}) value for an index it indicates looking at that value to gain insight on the fit. If there is no clear maximum (minimum) value, one can try to employ the so called elbow criterion (see section \ref{subsec:method_kmeans}) where a distinct change in direction for a graph might indicate a value worth examining. If there is neither there seems to be no information gain at hand from that particular index for this application.
+Table \ref{tab:kmeans_seeds_table} contains the index scores for each of the indices selected as columns and the number of clusters as rows. An easier representation of this data is a line chart which can be seen in Figure \ref{fig:kmeans_seeds_comparison_plot} and in the following description of results. More than simply a tool to compare scores between methods, these can help in identifying the number of clusters (or other parameters below) best fit to represent the data. So what can be learned from the data: If there is a clear maximum (minimum for \gls{DB}) value for an index it indicates looking at that value to gain insight on the fit. If there is no clear maximum (minimum) value, one can try to employ the so called elbow criterion (see section \ref{subsec:method_kmeans}) where a distinct change in direction for a graph might indicate a value worth examining. If there is neither there seems to be no information gain at hand from that particular index for this application.
 
 \begin{figure}[H]
-\begin{center}
+\centering
 \includegraphics[width=1.0\textwidth]{images/kmeans_seeds_index_plot.pdf}
 \caption{K-Means Seeds Data Set Indices by Number of Clusters}
-\end{center}
 \label{fig:kmeans_seeds_comparison_plot}
 \end{figure}
 
 \vspace{-0.5cm}
-Looking at figure \ref{fig:kmeans_seeds_comparison_plot} (one line for each index, two panels because of the vastly different scale of \gls{CH}) one can see a clear maximum in \gls{CH} value and a local maximum in \gls{DI} as well as a change in slope for \gls{SI} at three clusters each. Following the described logic, \gls{DB} also suggests considering three clusters. 
+Looking at Figure \ref{fig:kmeans_seeds_comparison_plot} (one line for each index, two panels because of the vastly different scale of \gls{CH}) one can see a clear maximum in \gls{CH} value and a local maximum in \gls{DI} as well as a change in slope for \gls{SI} at three clusters each. Following the described logic, \gls{DB} also suggests considering three clusters. 
 
-As mentioned in section \ref{sec:data_description} this data set originally comes with labels which allows to use them as a benchmark to see how the clustering performs. Plotting (figure \ref{fig:kmeans_seeds_tsne}) two dimensional representations (see t-SNE in section \ref{sec:frontend_description}) of the K-Means clustered result next to the original data shows a few things: the algorithm has, as expected, produced non-overlapping mostly contiguously shaped clusters in contrast to the original data. However using three clusters has generally produced a reasonably good fit, as is supported by an accuracy of 89.5\%, precision of 90\% and recall of 89.5\% to name a few common metrics.
+As mentioned in section \ref{sec:data_description} this data set originally comes with labels which allows to use them as a benchmark to see how the clustering performs. Plotting (Figure \ref{fig:kmeans_seeds_tsne}) two dimensional representations (see t-SNE in section \ref{sec:frontend_description}) of the K-Means clustered result next to the original data shows a few things: the algorithm has, as expected, produced non-overlapping mostly contiguously shaped clusters in contrast to the original data. However using three clusters has generally produced a reasonably good fit, as is supported by an accuracy of 89.5\%, precision of 90\% and recall of 89.5\% to name a few common metrics.
 
 \begin{figure}[H]
 \begin{center}
 \includegraphics[width=1.0\textwidth]{images/kmeans_seeds_tsne.pdf}
-\caption{Seeds Data Set Comparison Clustering and Original Labels}
 \end{center}
+\caption{Seeds Data Set Comparison Clustering and Original Labels}
 \label{fig:kmeans_seeds_tsne}
 \end{figure}
 
@@ -164,22 +182,22 @@ As mentioned in section \ref{sec:data_description} this data set originally come
 \subsubsection{Seeds - Mean Shift}
 \textit{written by L.B.}\\ 
 
-In the following two plots, values for the chosen cluster validation indexes that evaluate the clustering result generated applying the Mean Shift algorithm on the Seeds dataset for a range of bandwidth parameters are provided (Figure \ref{fig:mean_shift_seeds_indexes}).
+In the following two plots, values for the chosen cluster validation indexes that evaluate the clustering result generated applying the Mean Shift algorithm on the Seeds data set for a range of bandwidth parameters are provided (Figure \ref{fig:mean_shift_seeds_indexes}).
 To determine suitable bandwidth parameter values, ideally SI, DI and CH should be maximized while DB should be at a minimum. 
 Reaching this goal is not that easy due to the way those scores are computed.
 \newline
 \begin{figure}[H]
 \begin{center}
 \includegraphics[width=0.8\textwidth]{images/Meanshift_-_Seeds.pdf}
-\caption{Cluster Validation Indexes: Means Shift on Seeds}
 \end{center}
+\caption{Cluster Validation Indexes: Means Shift on Seeds}
 \label{fig:mean_shift_seeds_indexes}
 \end{figure}
-Taking a look at DI, CH and DB, one might choose a bandwidth of 0.2 which indeed results in a very high number of small clusters and does not seem to represent a natural structure within the dataset as can be seen in Figure \ref{fig:meanshift_seeds_clustering_tsne}.
+Taking a look at DI, CH and DB, one might choose a bandwidth of 0.2 which indeed results in a very high number of small clusters and does not seem to represent a natural structure within the data set as can be seen in Figure \ref{fig:meanshift_seeds_clustering_tsne}.
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.5\textwidth]{images/Meanshift_Seeds_0_2.png}
-    \caption{t-SNE projected result of Mean Shift with bandwidth = 0.2 on Seeds dataset}
+    \caption{t-SNE projected result of Mean Shift with bandwidth = 0.2 on Seeds data set}
     \label{fig:meanshift_seeds_clustering_tsne}
 \end{figure}
 
@@ -187,11 +205,11 @@ Instead, a balance between high values for DI, SI, CH and a low value for DB is 
 \begin{figure}[H]
     \subfigure{\includegraphics[width=0.49\textwidth]{images/Meanshift_Seeds_2.png}}
     \subfigure{\includegraphics[width=0.49\textwidth]{images/Meanshift_Seeds_2_5.png}}
-    \caption{t-SNE projected result of Mean Shift with bandwidth = 2 (left) and bandwidth = 2.5 (right)w on Seeds dataset}
+    \caption{t-SNE projected result of Mean Shift with bandwidth = 2 (left) and bandwidth = 2.5 (right)w on Seeds data set}
     \label{fig:meanshift_seeds_2_tsne}
 \end{figure}
 
-As the dataset is labeled (see section \ref{sec:seeds_kmeans_evaluation}), a comparison with the original labels would probably support choosing a bandwidth parameter value of 2.
+As the data set is labeled (see section \ref{sec:seeds_kmeans_evaluation}), a comparison with the original labels would probably support choosing a bandwidth parameter value of 2.
 
 \subsubsection{Seeds - Affinity Propagation}
 \textit{written by J.M.}\\
@@ -199,26 +217,26 @@ As the dataset is labeled (see section \ref{sec:seeds_kmeans_evaluation}), a com
 \begin{figure}[H]
 	\begin{center}
 		\includegraphics[width=0.5\textwidth]{images/af_seed78.png}
-	\caption{t-SNE plot of Affinity Propagation on Seeds dataset}
 	\end{center}
+	\caption{t-SNE plot of Affinity Propagation on Seeds data set}
 	\label{fig:af_seeds78}
 \end{figure}
 
 \begin{figure}[H]
 	\begin{center}
 		\includegraphics[width=0.5\textwidth]{images/af_seeds247.png}
-		\caption{t-SNE plot of Affinity Propagation on Seeds dataset}
 	\end{center}
+	\caption{t-SNE plot of Affinity Propagation on Seeds data set}
 	\label{fig:af_seeds2}
 \end{figure}
 
-On the seeds Dataset it performs good. And it finds some good cluster. Depending on the parameter more or less cluster are created which are shown \ref{fig:af_seeds78} and \ref{fig:af_seeds2}. In \ref{fig:af_seeds78} that input parameter is -78. It’s a very low compared to the parameter that are used in the other datasets. If this parameter gets lower, affinity propagation will create less cluster like in\ref{fig:af_seeds2}. In this figure the parameter is -247. If you compare the cluster validation metrics on these two plots, you can see that the second plot is better in all cluster validation metrics. If we look to other parameters, we don’t find new insights, the parameter -247 is quite optimal for this dataset. 
+On the seeds data set it performs good. And it finds some good cluster. Depending on the parameter more or less cluster are created which are shown \ref{fig:af_seeds78} and \ref{fig:af_seeds2}. In \ref{fig:af_seeds78} that input parameter is -78. It’s a very low compared to the parameter that are used in the other data sets. If this parameter gets lower, affinity propagation will create less cluster like in\ref{fig:af_seeds2}. In this figure the parameter is -247. If you compare the cluster validation metrics on these two plots, you can see that the second plot is better in all cluster validation metrics. If we look to other parameters, we don’t find new insights, the parameter -247 is quite optimal for this data set. 
 
 \begin{table}[H]
 	\centering
 	\begin{tabular}{||c c c ||} 
 		\hline
-		custer validation & plot1 & plot2 \\ [0.5ex] 
+		cluster validation & plot1 & plot2 \\ [0.5ex] 
 		\hline\hline
 		Calinski-Harabasz & 302.7425	 &  374.6137  \\ 
 		Davies-Bouldin & 0.8784	 & 0.7544	 \\
@@ -234,7 +252,7 @@ On the seeds Dataset it performs good. And it finds some good cluster. Depending
 \textit{written by B.L.}\\
 \label{sec:mall_kmeans_evaluation}
 
-As one of the features is categorical (gender), this is not an ideal application of the K-Means clustering method. The categories can be resolved into discrete values so that calculations can be run, but the arbitrary nature of this does not really allow for good interpretation of the results. An exemplary three dimensional plot \ref{fig:kmeans_customers_3d} shows the issue: 
+As one of the features is categorical (gender), this is not an ideal application of the K-Means clustering method. The categories can be resolved into discrete values so that calculations can be run, but the arbitrary nature of this does not really allow for good interpretation of the results. An exemplary three dimensional plot in Figure \ref{fig:kmeans_customers_3d} shows the issue: 
 
 \begin{wrapfigure}{r}{0.5\textwidth}
   \centering
@@ -248,19 +266,18 @@ gender is represented on the z-axis and the two manifestations simply rip the da
 \begin{figure}[H]
 \begin{center}
 \includegraphics[width=1.0\textwidth]{images/kmeans_customers_index_plot.pdf}
-\caption{K-Means Mall Customers Data Set Indices by Number of Clusters}
 \end{center}
+\caption{K-Means Mall Customers Data Set Indices by Number of Clusters}
 \label{fig:kmeans_customers_indices_plot}
 \end{figure}
 
-
-The data set contains four features, three of which have a measurable and interpretable impact on clustering, which lends itself to a visual comparison in three dimensional space. Figure \ref{fig:kmeans_customers_3d_multi} shows three plots, one for each suggested number of clusters. The highest overall evaluation scores were achieved for two clusters and purely from a visual standpoint this seems to hold up.
+The data set contains four features, three of which have a measurable and interpretable impact on clustering, which lends itself to a visual comparison in three dimensional space. Figure \ref{fig:kmeans_customers_3d_multi} shows three plots, one for each suggested number of clusters. The highest overall evaluation scores were achieved for two clusters and purely from a visual standpoint this seems to be a solution holding some weight. 
 
 \begin{figure}[H]
 \begin{center}
 \includegraphics[width=1.0\textwidth]{images/kmeans_mall_3d_multi.pdf}
-\caption{Mall Customers 3D Plot Clustering Options}
 \end{center}
+\caption{Mall Customers 3D Plot Clustering Options}
 \label{fig:kmeans_customers_3d_multi}
 \end{figure}
 \vspace{-0.5cm}
@@ -270,34 +287,34 @@ The data set contains four features, three of which have a measurable and interp
 \subsubsection{Mall Customers - Mean Shift}
 \textit{written by L.B.}\\
 
-The influence of different bandwidth parameter values for the application of Mean Shift on the Mall dataset can be seen in Figure \ref{fig:meanshift_mall}.
+The influence of different bandwidth parameter values for the application of Mean Shift on the Mall data set can be seen in Figure \ref{fig:meanshift_mall}.
 
 \begin{figure}[!ht]
 \begin{center}
 \includegraphics[width=0.8\textwidth]{images/Meanshift_-_Mall_Customers.pdf}
-\caption{Cluster Validation Indexes: Mean Shift on Mall Customers}
 \end{center}
+\caption{Cluster Validation Indexes: Mean Shift on Mall Customers}
 \label{fig:meanshift_mall}
 \end{figure}
-Again, as for the Seeds dataset, ignoring SI and only trying to maximize DI and CH while minimizing DB, one might choose a bandwidth of 4.6. But again, this rather introduces artifacts than reflecting any natural structures (Figure \ref{fig:meanshift_mall_4_6}).
+Again, as for the Seeds data set, ignoring SI and only trying to maximize DI and CH while minimizing DB, one might choose a bandwidth of 4.6. But again, this rather introduces artifacts than reflecting any natural structures (Figure \ref{fig:meanshift_mall_4_6}).
 
 \begin{figure}[!ht]
 \begin{center}
 \includegraphics[width=0.5\textwidth]{images/Meanshift_Mall_4_6.png}
-\caption{t-SNE projected result of Mean Shift with bandwidth = 0.2 on Mall Customers dataset}
 \end{center}
+\caption{t-SNE projected result of Mean Shift with bandwidth = 0.2 on Mall Customers data set}
 \label{fig:meanshift_mall_4_6}
 \end{figure}
 
 A more suitable clustering result is generated using a bandwidth of 27.5 (Figure \ref{fig:meanshift_mall_27}). In the plot, one can see that this value compensates between all four indexes.
 When taking a look at the clustering result, there still are some data points which do not seem to be clustered correctly. One possible explanation concerns the gender column which is encoded as 0 and 1 (see section \ref{sec:mall_kmeans_evaluation}). It is not possible to calculate a meaningful distance between binary variables which may have an influence on the clustering result. 
 
-\begin{figure}[!ht]
+\begin{figure}[H]
 \begin{center}
 \includegraphics[width=0.5\textwidth]{images/Meanshift_Mall_27_5.png}
-\caption{t-SNE projected result of Mean Shift with bandwidth = 27.5 on Mall Customers dataset}
-\end{center}
+\caption{t-SNE projected result of Mean Shift with bandwidth = 27.5 on Mall Customers data set}
 \label{fig:meanshift_mall_27}
+\end{center}
 \end{figure}
 
 \subsubsection{Mall Customers - Affinity Propagation}
@@ -306,31 +323,31 @@ When taking a look at the clustering result, there still are some data points wh
  \begin{figure}[!ht]
  	\begin{center}
  		\includegraphics[width=0.5\textwidth]{images/af_mallcustomers2870.png}
- 		\caption{t-SNE plot of Affinity Propagation on Mall Customers dataset}
  	\end{center}
+ 	\caption{t-SNE plot of Affinity Propagation on Mall Customers data set}
  	\label{fig:af_mall1}
  \end{figure}
  
  \begin{figure}[!ht]
  		\begin{center}
  			\includegraphics[width=0.5\textwidth]{images/af_mallcustomers8778.png}
- 			\caption{t-SNE plot of Affinity Propagation on Mall Customers dataset}
  		\end{center}
+ 		\caption{t-SNE plot of Affinity Propagation on Mall Customers data set}
  		\label{fig:af_mall2}
  	\end{figure}
  
-On the customers Dataset it also performs good, but for this dataset the parameter is smaller as for the seeds dataset. In \ref{fig:af_mall1} it computed with -2870. Here you see that the Clustering is not good, there exists many clusters. To check if this algorithm works with this dataset the parameter is change to a parameter where to clusters look good. This happened when the parameter is around 8778. This plot is in \ref{fig:af_mall2}. If you compare these two plots with the cluster validation indexes, it confirms the obvious the \ref{fig:af_mall2} is better. This parameter is also near to the optimum for this dataset. 
+On the customers data set it also performs good, but for this data set the parameter is smaller as for the seeds data set. In \ref{fig:af_mall1} it computed with -2870. Here you see that the Clustering is not good, there exists many clusters. To check if this algorithm works with this data set the parameter is change to a parameter where to clusters look good. This happened when the parameter is around 8778. This plot is in \ref{fig:af_mall2}. If you compare these two plots with the cluster validation indexes, it confirms the obvious the \ref{fig:af_mall2} is better. This parameter is also near to the optimum for this data set. 
 
 \subsubsection{House Pricing - K-Means}
 \textit{written by B.L.}\\
 
-This data set is challenging for K-Means clustering due to the high number of features. As described in section \ref{subsec:method_kmeans} the concept of distance does not hold up well in high dimensional cases. Attempts to transform the data into lower dimensional representations through principle component analysis did not yield an improvement in clustering performance. Data in figure \ref{fig:kmeans_housing_indices_plot} suggests to consider 2 (\gls{DI}), 3 (\gls{SI}, \gls{DB}) or 4 (\gls{CH}) clusters.
+This data set is challenging for K-Means clustering due to the high number of features. As described in section \ref{subsec:method_kmeans} the concept of distance does not hold up well in high dimensional cases. Attempts to transform the data into lower dimensional representations through principle component analysis did not yield an improvement in clustering performance. Data in Figure \ref{fig:kmeans_housing_indices_plot} suggests to consider 2 (\gls{DI}), 3 (\gls{SI}, \gls{DB}) or 4 (\gls{CH}) clusters.
 
 \begin{figure}[H]
 \begin{center}
 \includegraphics[width=1.0\textwidth]{images/kmeans_housing_index_plot.pdf}
-\caption{K-Means Housing Data Set Indices by Number of Clusters}
 \end{center}
+\caption{K-Means Housing Data Set Indices by Number of Clusters}
 \label{fig:kmeans_housing_indices_plot}
 \end{figure}
 
@@ -339,8 +356,8 @@ Due to the high dimensionality of the data, looking at different angles in three
 \begin{figure}[H]
 \begin{center}
 \includegraphics[width=1.0\textwidth]{images/kmeans_housing_tsne.pdf}
-\caption{K-Means Housing Data Set t-SNE Transformed Data Plot}
 \end{center}
+\caption{K-Means Housing Data Set t-SNE Transformed Data Plot}
 \label{fig:kmeans_housing_2d_comparison}
 \end{figure}
 \vspace{-0.5cm}
@@ -348,49 +365,49 @@ Due to the high dimensionality of the data, looking at different angles in three
 \subsubsection{House Pricing - Mean Shift}
 \textit{written by L.B.}\\
 
-The third dataset the Mean Shift algorithm was applied to is the Boston House Pricing dataset. In contrast to the Seeds and the Mall Customers dataset, it contains fourteen columns and hence requires the handling of fourteen dimensions. As mentioned in section \ref{sec:Mean Shift}, runtime results in a complexity of $O(n^{3})$ in high dimensions. 
-Nevertheless, Mean Shift seems to be able to handle the dataset and produces reasonable clustering results. 
+The third data set the Mean Shift algorithm was applied to is the Boston House Pricing data set. In contrast to the Seeds and the Mall Customers data set, it contains fourteen columns and hence requires the handling of fourteen dimensions. As mentioned in section \ref{sec:Mean Shift}, run time results in a complexity of $O(n^{3})$ in high dimensions. 
+Nevertheless, Mean Shift seems to be able to handle the data set and produces reasonable clustering results. 
 
-\begin{figure}[!ht]
+\begin{figure}[H]
 \begin{center}
 \includegraphics[width=0.8\textwidth]{images/Meanshift_-_Housing.pdf}
-\caption{Cluster validation indexes: Mean Shift on House Pricing dataset}
 \end{center}
+\caption{Cluster validation indexes: Mean Shift on House Pricing data set}
 \label{fig:meanshift_housing_indexes}
 \end{figure}
 
-In Figure \ref{fig:meanshift_housing_indexes} one can clearly see a maximum of DI, SI and CH and at the same time a minimum for DB in the range of 118 to 156 or between 159 and 185. All of the four chosen cluster validation indexes do not change for either of the values within the mentioned ranges. This is due to the large distance between data points of the red cluster and the remaining datapoints as it can be seen in Figure \ref{fig:meanshift_housing_120}.
+In Figure \ref{fig:meanshift_housing_indexes} one can clearly see a maximum of DI, SI and CH and at the same time a minimum for DB in the range of 118 to 156 or between 159 and 185. All of the four chosen cluster validation indexes do not change for either of the values within the mentioned ranges. This is due to the large distance between data points of the red cluster and the remaining data points as it can be seen in Figure \ref{fig:meanshift_housing_120}.
 
-\begin{figure}[!ht]
+\begin{figure}[H]
 \begin{center}
 \includegraphics[width=0.5\textwidth]{images/Meanshift_Housing_120.png}
-\caption{t-SNE projected result of Mean Shift with bandwidth = 120 on House Pricing dataset}
 \end{center}
+\caption{t-SNE projected result of Mean Shift with bandwidth = 120 on House Pricing data set}
 \label{fig:meanshift_housing_120}
 \end{figure}
 
-The bandwidth value determines the kernel's radius and thus influences which data points are considered for which cluster. If data points are far away from each other, as it is the case for the Boston House Pricing dataset, increasing the bandwidth parameter will not include any more data points within the kernel's radius and thus not have an influence on the cluster generation. 
+The bandwidth value determines the kernel's radius and thus influences which data points are considered for which cluster. If data points are far away from each other, as it is the case for the Boston House Pricing data set, increasing the bandwidth parameter will not include any more data points within the kernel's radius and thus not have an influence on the cluster generation. 
 
-Furthermore, the dataset consists of three relatively dense regions far away from each other, which is a desirable situation when applying density-based clustering algorithms. Due to this, Mean Shift algorithm performs well on the dataset, even if it is high-dimensional.
+Furthermore, the data set consists of three relatively dense regions far away from each other, which is a desirable situation when applying density-based clustering algorithms. Due to this, Mean Shift algorithm performs well on the data set, even though it is high-dimensional.
 
 \subsubsection{House Pricing - Affinity Propagation}
 \textit{written by J.M.}\\
 
-On the house - pricing dataset affinity propagation performs not good. It takes some time to find a good parameter for this dataset. This is shown in  \ref{fig:af_house1}. The parameter for this plot wars -71433. This parameter is so low because this dataset has the most dimensions. If you use a higher parameter the cluster is not so good. This is shown in \ref{fig:afhouse2}.   
+On the house - pricing data set affinity propagation performs not good. It takes some time to find a good parameter for this data set. This is shown in  \ref{fig:af_house1}. The parameter for this plot wars -71433. This parameter is so low because this data set has the most dimensions. If you use a higher parameter the cluster is not so good. This is shown in \ref{fig:afhouse2}.   
 
 \begin{figure}[H]
 		\begin{center}
 			\includegraphics[width=0.5\textwidth]{images/af_housepricing71433.png}
-			\caption{t-SNE plot of Affinity Propagation on House Pricing dataset}
 		\end{center}
+		\caption{t-SNE plot of Affinity Propagation on House Pricing data set}
 		\label{fig:af_house1}
 	\end{figure}
 	
 	\begin{figure}[H]
 			\begin{center}
 				\includegraphics[width=0.5\textwidth]{images/af_housepricing6900.png}
-				\caption{t-SNE plot of Affinity Propagation on House Pricing dataset}
 			\end{center}
+			\caption{t-SNE plot of Affinity Propagation on House Pricing data set}
 			\label{fig:afhouse2}
 		\end{figure}
 
@@ -398,32 +415,32 @@ On the house - pricing dataset affinity propagation performs not good. It takes 
 \textit{written by B.L.}\\
 
 %, the highest of all the data sets in this comparison
-The wine data set again presents a challenge due to its high feature count as well as having one discrete feature. Dimensionality reduction helps to speed up calculation but does not show an improvement in evaluation index performance. The plot of evaluation indices in figure \ref{fig:kmeans_wine_indices_comparison} gives an indication for 2 (\gls{SI}, \gls{DB}), 3 (\gls{CH}), or 6 (\gls{CH}, \gls{DB}) clusters
+The wine data set again presents a challenge due to its high feature count as well as having one discrete feature. Dimensionality reduction helps to speed up calculation but does not show an improvement in evaluation index performance. The plot of evaluation indices in Figure \ref{fig:kmeans_wine_indices_comparison} gives an indication for 2 (\gls{SI}, \gls{DB}), 3 (\gls{CH}), or 6 (\gls{CH}, \gls{DB}) clusters
 
 \begin{figure}[H]
 \begin{center}
 \includegraphics[width=1.0\textwidth]{images/kmeans_wine_index_plot.pdf}
-\caption{K-Means Wine Data Set Indices by Number of Clusters}
 \end{center}
+\caption{K-Means Wine Data Set Indices by Number of Clusters}
 \label{fig:kmeans_wine_indices_comparison}
 \end{figure}
 
-but looking at the two dimensional transformed data in figure \ref{fig:kmeans_wine_tsne} for three and six clusters compared to the original labeling does not allow for any interpretation due to the fact that little about structure - if it exists - can be learned from the original labels.
+but looking at the two dimensional transformed data in Figure \ref{fig:kmeans_wine_tsne} for three and six clusters compared to the original labeling does not allow for any interpretation due to the fact that little about structure - if it exists - can be learned from the original labels.
 
 %does not allow for any visual evaluation concerning the quality of fit.
 
-%The result is inconclusive and without a focus on feature engineering other methods may be better suited to deal with this dataset.
+%The result is inconclusive and without a focus on feature engineering other methods may be better suited to deal with this data set.
 
 
 \begin{figure}[H]
 \begin{center}
 \includegraphics[width=1.0\textwidth]{images/kmeans_wine_tsne.pdf}
-\caption{K-Means Wine Data Set Indices by Number of Clusters}
 \end{center}
+\caption{K-Means Wine Data Set Indices by Number of Clusters}
 \label{fig:kmeans_wine_tsne}
 \end{figure}
 
-Looking back at the PCA step mentioned before, the picture becomes clearer when utilizing it as a visualization support and looking at a three dimensional representation of the transformed data in figure \ref{fig:kmeans_wine_3d_multi} gives a clearer understanding of how the clustering has worked out. The component driving the differentiation between clusters called \textit{PCA 1} captures 94\% of the variance and loadings show it being driven in large part by the two \textit{sulfur} concentration features.
+Looking back at the PCA step mentioned before, the picture becomes clearer when utilizing it as a visualization support and looking at a three dimensional representation of the transformed data in Figure \ref{fig:kmeans_wine_3d_multi} gives a clearer understanding of how the clustering has worked out. The component driving the differentiation between clusters called \textit{PCA 1} captures 94\% of the variance and loadings show it being driven in large part by the two \textit{sulfur} concentration features.
 
 \begin{figure}[H]
 \centering
@@ -440,29 +457,29 @@ Looking back at the PCA step mentioned before, the picture becomes clearer when 
   \label{fig:kmeans_wine_pca_original}
 \end{wrapfigure}
 
-Looking at the original labeling of the data however shows the limitations of clustering and especially K-Means clustering for this data set. Figure \ref{fig:kmeans_wine_pca_original} shows the same projection as figure \ref{fig:kmeans_wine_3d_multi} but this time with the original labeling. The math on accuracy and recall at 19.8\% and precision somewhat better at 58.2\% also shows the less than optimal performance. However this is not unexpected when considering the strengths and weaknesses of K-Means described in section \ref{subsec:method_kmeans}: contiguous, non-overlapping, convex clusters can be captured well while at least this representation of the data displays a lack of these characteristics in the data set.
+Looking at the original labeling of the data however shows the limitations of clustering and especially K-Means clustering for this data set. Figure \ref{fig:kmeans_wine_pca_original} shows the same projection as Figure \ref{fig:kmeans_wine_3d_multi} but this time with the original labeling. The math on accuracy and recall at 19.8\% and precision somewhat better at 58.2\% also shows the less than optimal performance. However this is not unexpected when considering the strengths and weaknesses of K-Means described in section \ref{subsec:method_kmeans}: contiguous, non-overlapping, convex clusters can be captured well while at least this representation of the data displays a lack of these characteristics in the data set.
 
 
 \subsubsection{Wine Quality - Mean Shift}
 \textit{written by L.B.}\\
 
-Applying Mean Shift algorithm to the last dataset shows that density-based clustering is also able to identify non-convex clusters. The following plots demonstrate how Mean Shift clustering performed on the Redwine Quality dataset along different values for the required bandwidth parameter.
+Applying Mean Shift algorithm to the last data set shows that density-based clustering is also able to identify non-convex clusters. The following plots demonstrate how Mean Shift clustering performed on the Red Wine Quality data set along different values for the required bandwidth parameter.
 
 \begin{figure}[H]
 \begin{center}
 \includegraphics[width=0.8\textwidth]{images/Meanshift_-_Red_Wine.pdf}
-\caption{Cluster validation indexes: Mean Shift on Redwine Quality}
 \end{center}
+\caption{Cluster validation indexes: Mean Shift on Red Wine Quality}
 \label{fig:meanshift_wine_indexes}
 \end{figure}
 
-The cluster validation indexes suggest that a bandwidth parameter of 22.5 generates the best clustering results. However, the overall performance on this dataset is worse compared to the House Pricing dataset, even though consists of less dimensions. This is the case as data points of the Wine Quality dataset lie relatively close together and no distant and clearly separated dense regions can be identified (Figure \ref{fig:meanshift_wine_22_5}). 
+The cluster validation indexes suggest that a bandwidth parameter of 22.5 generates the best clustering results. However, the overall performance on this data set is worse compared to the House Pricing data set, even though consists of less dimensions. This is the case as data points of the Wine Quality data set lie relatively close together and no distant and clearly separated dense regions can be identified (Figure \ref{fig:meanshift_wine_22_5}). 
 
 \begin{figure}[H]
 \begin{center}
 \includegraphics[width=0.5\textwidth]{images/Meanshift_Wine_22_5.png}
-\caption{t-SNE projected result of Mean Shift with bandwidth = 22.5 on Redwine Quality dataset}
 \end{center}
+\caption{t-SNE projected result of Mean Shift with bandwidth = 22.5 on Red Wine Quality data set}
 \label{fig:meanshift_wine_22_5}
 \end{figure}
 % \begin{itemize}
@@ -472,35 +489,12 @@ The cluster validation indexes suggest that a bandwidth parameter of 22.5 genera
 \subsubsection{Wine Quality - Affinity Propagation}
 \textit{written by J.M.}\\
 
-One the wine dataset affinity propagation works not good. The calculation to build cluster needs significantly longer because this dataset has more datapoints than the other datasets. After it computes the clusters it builds many clusters.  \ref{fig:af_wine1} show a plot of the clustering. There are many cluster in it. The parameter for this examples wars – 6264. It don’t work a good as the same reason as the house pricing dataset, because the dimensions are very high. The Silhouette Index is also low, only 0.32. 
+One the wine data set affinity propagation works not good. The calculation to build cluster needs significantly longer because this data set has more data points than the other data sets. After it computes the clusters it builds many clusters.  \ref{fig:af_wine1} show a plot of the clustering. There are many cluster in it. The parameter for this examples wars – 6264. It don’t work a good as the same reason as the house pricing data set, because the dimensions are very high. The Silhouette Index is also low, only 0.32. 
 
 \begin{figure}[H]
 	\begin{center}
 		\includegraphics[width=0.5\textwidth]{images/af_wine6533.png}
-		\caption{t-SNE plot of Affinity Propagation on Wine Quality dataset}
 	\end{center}
+	\caption{t-SNE plot of Affinity Propagation on Wine Quality data set}
 	\label{fig:af_wine1}
 \end{figure}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

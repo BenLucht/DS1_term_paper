@@ -48,7 +48,7 @@ where each of the numbers \circled{1} to \circled{4} refer to a topic mentioned 
 
 Clustering with the described method is fast, commonly requiring fewer iterations than observations \cite{har2005fast}. The naive upper bound is trivially $\mathcal{O}(K^{n})$ (trying every possible configuration), with \cite{arthur2006slow} showing worst case run time to be superpolynomial ($\mathcal{O}(m^{(K+2/n)})$) with common runtimes being polynomial.
 
-\circled{1} Initial placement of the centroids can be achieved in different ways. The most basic method is placing them at random. On singular runs of the algorithm this can lead to problems as can be seen in the example in figure \ref{img:k_means_bad_init}. From a visual standpoint there should be three clusters, one to the left containing four observations, one in the middle containing two observations and one to the right with five observations. Initial random placement has resulted in two initial centroids far to the left and one near the center of the feature space. Performing the steps as described results in a final clustering of one cluster containing a single observation to the left, another comprising three observations also near the left and one big cluster with seven observations from two visually separated segments of the data. This is a valid result meeting stopping criteria but it is not meeting the expectations. Different starting positions can lead to different clustering results.
+\circled{1} Initial placement of the centroids can be achieved in different ways. The most basic method is placing them at random. On singular runs of the algorithm this can lead to problems as can be seen in the example in Figure \ref{img:k_means_bad_init}. From a visual standpoint there should be three clusters, one to the left containing four observations, one in the middle containing two observations and one to the right with five observations. Initial random placement has resulted in two initial centroids far to the left and one near the center of the feature space. Performing the steps as described results in a final clustering of one cluster containing a single observation to the left, another comprising three observations also near the left and one big cluster with seven observations from two visually separated segments of the data. This is a valid result meeting stopping criteria but it is not meeting the expectations. Different starting positions can lead to different clustering results.
 
 \begin{figure}[h]
 \centering
@@ -141,15 +141,15 @@ A number of methods expand on the idea of working with observations by first sel
 One such idea is to randomly select a starting point and subsequently selecting points with the maximum minimal distance to the previously selected \cite{gonzalez1985clustering}, often called \textit{maximin}.
 
 A popular method going by the name \textit{kmeans++} developed by \cite{arthur2006k} extends the idea by \cite{macqueen1967some} described above. After arbitrarily selecting a first observation, the remaining $K-1$ initial points are picked in a random process. Instead of assuming an even distribution all observations are assigned probabilities proportional to the squared distance to their nearest previously picked initial centroid. Despite the additional computational aufwand in the beginning, this method shows reductions in terminal errors as well as time to convergence of up to half compared to naive random selection on $\mathcal{F}^{n}$. There are implementations of \textit{kmeans++} for most popular machine learning implementations, including the one described in section \ref{sec:python_description}.
-
-This selection of methods is by no means exhaustive but something something ..
+This selection of methods is by no means exhaustive but should give a good overview of popular options.
 
 \circled{2} In theory the practical application of the algorithm described above can be adapted to a plethora of distance measures to varying degrees of success. As described the most natural is the euclidean distance as it maps directly to variance minimization. It has been shown by \cite{aggarwal2001surprising} that other $L^{p}$ norms than $L^{2}$ (like euclidean) can be used successfully, $L^{1}$ proving particularly good when applied for high dimensional cases. It can be shown by \cite{selim1984k}, though, that using metrics other than euclidean distances may cause the method to fail to converge. This may in some cases be alleviated by a clever selection of thresholds as described in \circled{4}.
-The choice of distance function will affect the clustering result. Opting for the euclidean distance will lead to clusters tending towards \textit{n-spherical} shapes, applying Manhattan distance \textit{hypercubes} and so on. Befitting the K-Means designation the ideal use case is data containing mostly contiguous subsets distributed around a finite number of means. Illustration \ref{img:k_means_cluster_success} depicts examples of data suitable (1-3) and not suitable (4-6) for K-Means application.
+The choice of distance function will affect the clustering result. Opting for the euclidean distance will lead to clusters tending towards \textit{n-spherical} shapes, applying Manhattan distance \textit{hyper cubes} and so on. Befitting the K-Means designation the ideal use case is data containing mostly contiguous subsets distributed around a finite number of means. Illustration \ref{img:k_means_cluster_success} depicts examples of data suitable (1,3) and not suitable (2,4,5) for K-Means application \cite{sklearn_website}.
 
 \begin{figure}[h]
-\caption{Data shapes and K-Means-clustering success}
-%\includegraphics[width=0.6\textwidth]{something}
+\centering
+\includegraphics[width=0.75\textwidth]{images/kmeans_suitable_shapes.png}
+\caption{Data Shapes and K-Means Clustering Success}
 \label{img:k_means_cluster_success}
 \end{figure}
 
