@@ -58,7 +58,7 @@ def get_slider(selected_data, option):
     if selected_data == 'Seeds':
         kmvals = [2, 8, 3]
         spvals = [2, 8, 3]
-         afvals = [-1000, -50, -250]
+        afvals = [-1000, -50, -250]
         msvals = [1, 6, 2]
     elif selected_data == 'Mall Customers':
         kmvals = [2, 8, 2]
@@ -97,7 +97,7 @@ def get_default_parameters(selected_data, algorithm):
     elif selected_data == 'Mall Customers': 
         return {'kmeans': [2, 8, 2],
         'spectral': [2, 8, 3],
-       'affinity': [-10000, -1000, -7000],
+        'affinity': [-10000, -1000, -7000],
         'meanshift': [10, 50, 22]}[algorithm]
     elif selected_data == 'House Pricing':
         return {'kmeans': [2, 8, 4],
