@@ -92,7 +92,7 @@ def get_default_parameters(selected_data, algorithm):
     if selected_data == 'Seeds': 
         return {'kmeans': [2, 8, 3],
         'spectral': [2, 8, 3],
-        'affinity': [-1000, -50, -250]
+        'affinity': [-1000, -50, -250],
         'meanshift': [1, 6, 2]}[algorithm]
     elif selected_data == 'Mall Customers': 
         return {'kmeans': [2, 8, 2],
