@@ -58,22 +58,22 @@ def get_slider(selected_data, option):
     if selected_data == 'Seeds':
         kmvals = [2, 8, 3]
         spvals = [2, 8, 3]
-        afvals = [-10000, -50, -7000]
+         afvals = [-1000, -50, -250]
         msvals = [1, 6, 2]
     elif selected_data == 'Mall Customers':
         kmvals = [2, 8, 2]
         spvals = [2, 8, 3]
-        afvals = [-10000, -50, -7000]
+        afvals = [-10000, -1000, -7000]
         msvals = [10, 50, 22]
     elif selected_data == 'House Pricing':
         kmvals = [2, 8, 4]
         spvals = [2, 8, 3]
-        afvals = [-10000, -50, -7000]
+        afvals = [-100000, -1000, -47000]
         msvals = [80, 150, 120]
     elif selected_data == 'Wine Quality':
         kmvals = [2, 8, 6]
         spvals = [2, 8, 3]
-        afvals = [-10000, -50, -7000]
+        afvals = [-100000, -1000, -7000]
         msvals = [10, 40, 22]
 
     if option == 'K-Means':
@@ -92,22 +92,22 @@ def get_default_parameters(selected_data, algorithm):
     if selected_data == 'Seeds': 
         return {'kmeans': [2, 8, 3],
         'spectral': [2, 8, 3],
-        'affinity': [-10000, -50, -7000],
+        'affinity': [-1000, -50, -250]
         'meanshift': [1, 6, 2]}[algorithm]
     elif selected_data == 'Mall Customers': 
         return {'kmeans': [2, 8, 2],
         'spectral': [2, 8, 3],
-        'affinity': [-10000, -50, -7000],
+       'affinity': [-10000, -1000, -7000],
         'meanshift': [10, 50, 22]}[algorithm]
     elif selected_data == 'House Pricing':
         return {'kmeans': [2, 8, 4],
         'spectral': [2, 8, 3],
-        'affinity': [-10000, -50, -7000],
+        'affinity': [-100000, -1000, -47000],
         'meanshift': [80, 150, 120]}[algorithm]
     elif selected_data == 'Wine Quality':
         return {'kmeans': [2, 8, 6],
         'spectral': [2, 8, 3],
-        'affinity': [-10000, -50, -7000],
+        'affinity': [-100000, -1000, -7000],
         'meanshift': [10, 40, 22]}[algorithm]
 
 def get_data(mode):
