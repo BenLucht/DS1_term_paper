@@ -1,2 +1,4 @@
 \subsection{Scikit-Learn Affinity}
 \label{subsec:sklearn_affinity}
+
+For the implementation of affinity propagation, we chose \cite{sklearn_api}. There you can chose parameter for this algorithm. You can choose the max\_iter parameter which specify the number of the maximum iterations. Another parameter is convergence\_iter which specify to stop the convergence if nothing is change in the cluster. This is set default at 15. The preference parameter is the parameter that you can chose in our web frontend. This parameter specifies that data points, which a have a bigger preference value, got a higher probability to be the exemplars for this cluster. You can also specify affinity you want to use. In our frontend only the Euclidean is used. This is also the default value. 

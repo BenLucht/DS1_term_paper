@@ -1,4 +1,4 @@
-Due to the nature of clustering as an unsupervised machine learning method, it is typically applied to data sets lacking prior information on grouping. Therefore measuring the performance of each method can only be performed on the data and the labeling produced by each clustering algorithm. These types of calculations are commonly called \textit{internal cluster validation} indices.
+Due to the nature of clustering as an unsupervised Machine Learning method, it is typically applied to data sets lacking prior information on grouping. Therefore, measuring the performance of each method can only be performed on the data and the labeling produced by each clustering algorithm. These types of calculations are commonly called \textit{internal cluster validation} indices.
 
 Differentiating by the way compactness and separation are measured \cite{balbi2016cosine} split indices into two groups. There are graph based indices: C Index, Dunn, Gamma, G+, McClain-Rao, Point Biserial, Silhouette, Tau, and there are prototype based indices: Calinski-Harabasz, Davies-Bouldin, Pakhira-Bandyopadhyay-Maulik (PBM), Ratkowski-Lance, Ray-Turi, Xie-Beni, Wemmert-Gancarski. 
 
@@ -16,7 +16,7 @@ The Dunn Index is defined as: \newline
 \includegraphics[width=0.7\textwidth]{images/dunn.png}
     
 While $d(c_{i},c_{j}$) defines the intercluster distance between cluster $d(X_{i},X_{j}$) represents the intracluster distance of cluster $X_{k}$. \newline
-$C$ is the number of cluster of dataset.
+$C$ is the number of cluster of data set.
 Large values of index Dunn correspond to good clustering results, since higher values indicate that clusters are compact \cite{ballarin2015cluster}.The main disadvantage of the Dunn Index is that the calculation of the index is time consuming. Additionally, the index is very sensitive to noise, as the maximum cluster diameter can be large in a noisy environment \cite{ballarin2015cluster,rendon2011internal}. \newline
 
 To sum up, the Dunn index can be computed with following steps [4]:\newline
@@ -42,13 +42,13 @@ If the result shows compact and well-separated clusters the diameter of the clus
 \subsection{Calinski-Harabasz Index}
 \textit{written by B.L.}\\
 
-The Calinski-Harabasz criterion \cite{calinski1974dendrite} is defined as a poportional measure of within cluster variance to between cluster variance. That is why it is also known as the \gls{VRC}. Mathematically this means
+The Calinski-Harabasz criterion \cite{calinski1974dendrite} is defined as a proportional measure of within cluster variance to between cluster variance. That is why it is also known as the \gls{VRC}. Mathematically, this means
 \begin{equation}
-        CH = \frac{S_{B}}{S_{W}}\frac{m-K}{K-1} = \frac{\sum_{k=1}^{K} \left | C_{k} \right | \left \| c_{k} - \sum_{x' \in X}^{} x' \right \|^{2}}{\sum_{k=1}^{K}\sum_{x \in C_{k}}^{} \left \| x - c_{i} \right \|^{2}} \frac{m-K}{K-1}
+        CH = \frac{S_{B}}{S_{W}}\frac{m-K}{K-1} = \frac{\sum_{k=1}^{K} \left | C_{k} \right | \left \| c_{k} - \frac{1}{\left | X \right |}\sum_{x' \in X}^{} x' \right \|^{2}}{\sum_{k=1}^{K}\sum_{x \in C_{k}}^{} \left \| x - c_{i} \right \|^{2}} \frac{m-K}{K-1}
 \end{equation}
 utilizing the same notation as equation \ref{eq:kmeans_basic_other}. Between-cluster variance is divided by within-cluster variance. Dividing the data into more partitions of course reduces within-cluster variance, which is why there is also a scaling factor (second fraction representing degrees of freedom) to account for it. In comparison to \gls{DB} between-cluster variance is calculated in relation to the center of the data set in place of between individual cluster centers themselves. There is no upper limit to the value that can be achieved. A higher value is considered to be better.
 
-Due to its construction (distance measure) this index performs well when clusters form mostly convex shapes. This can lead to mis-evaluation if the underlying data does not contain such globular clusters so a method capturing this might score lower while actually fitting the data better. It may therefore be better suited to compare different parameters for the same algorithm instead of comparing different algorithms. A comparative study of 30 cluster validation indices \cite{arbelaitz2013extensive} ranks \gls{CH} performance in evaluating fit near the top in many applications, particularly when evaluating K-Means results as expected.
+Due to its construction (distance measure), this index performs well when clusters form mostly convex shapes. This can lead to mis-evaluation if the underlying data does not contain such globular clusters so a method capturing this might score lower while actually fitting the data better. It may therefore be better suited to compare different parameters for the same algorithm instead of comparing different algorithms. A comparative study of 30 cluster validation indices \cite{arbelaitz2013extensive} ranks \gls{CH} performance in evaluating fit near the top in many applications, particularly when evaluating K-Means results as expected.
     
     
 \subsection{Davies-Bouldin Index}
@@ -56,42 +56,42 @@ Due to its construction (distance measure) this index performs well when cluster
 
 %Davies-Bouldin \cite{davies1979cluster} brief explanation and reasons.
 The Davies-Bouldin index is a metric to evaluate clustering algorithms and it was developed by David Davies and Donald Bouldin in 1979 \cite{davies1979cluster}. 
-It is used to check the validity of the clusters. To reach this, the Davies-Bouldin Index tries to maximize the intern-cluster distance 
-and on the other side tries to minimize the intern cluster distance. 
+It is used to check the validity of clusters. To reach this, the Davies-Bouldin Index tries to maximize the inter-cluster distance 
+and on the other side tries to minimize the intra-cluster distance. 
 The Davies-Bouldin index is defined as 
 	
 $ \bar{R} \equiv \frac{1}{N} \sum_{i=1}^{N} R_i  $ \\
-where N is the number of cluster and $R_i$ is the maximum of $R_{ij}$ where i$\neq$j \\
+where N is the number of clusters and $R_i$ is the maximum of $R_{ij}$ where i$\neq$j \\
 	
 $R_{ij} \equiv \frac{S_i+ S_j}{M_{ij}}$ \\
-where $M_{ij}$ is the Minkowski metric which can be descibed as: \\ $M_{ij} = \{ \sum_{k=1}^{N} |a_{ki} - a_{kj}  |^p    \} ^{  \frac{1}{p}}   $ 	
+where $M_{ij}$ is the Minkowski metric which can be described as: \\ $M_{ij} = \{ \sum_{k=1}^{N} |a_{ki} - a_{kj}  |^p    \} ^{  \frac{1}{p}}   $ 	
 	
 $S_{ij} = \{\frac{1}{T_i} \sum_{j=1}^{T_i} |X_{j} - A_{i}  |^q    \}^\frac{1}{q}$ \\
 	
 If q =1 	$S_{ij}$ is the Euclidean distance between centroids.  \\
   
-For our evaluation we use the implementation from sklearn of this metric. This metrics calculate a score. Zero is the lowest score that can be reached. If a score is closer to zero, it related that there is a better seperation between the calculated clusters. 
+For our evaluation we use the implementation from sklearn of this metric. This metric calculates a score. Zero is the lowest score that can be reached. If a score is closer to zero, it relates to a better separation between the calculated clusters. 
 
 \subsection{Silhouette Score}
 \label{Silhouette Score}
 \textit{written by L.B.}\\
 
 Cluster validation indexes are used to assess clustering quality. That means it is investigated whether the resulting clusters reflect natural structures in the data or whether clusters rather determine artificial groups. In general, the ratio of dissimilarity between data points within the same cluster to dissimilarity between data points in different clusters is a measurement for clustering quality. 
-The Silhouette Score is one of such cluster validation indexes which can be applied to evaluate clustering results if Euclidean distance measures can be calculated on the underlying data set. According to that, a clustering result as well as proximity scores between all data points have to be provided to be able to apply the Silhouette Score. 
-For a single data point, distances to all the data points assigned to the same cluster are calculated. Here, the mean of all these distances is called \textit{a}. After that, the nearest cluster for each data point has to be found. This can be done by iteratively calculating the mean of distances between the single data point and all data points within another cluster until distances for all clusters have been computed. The minimum average distance determines the nearest cluster for the single data point. 
-The minimum average distance is called \textit{b} here. The Silhouette Score for data point i is calculated using the following formula:
+The Silhouette Score is one of such cluster validation indexes which can be applied to evaluate clustering results if Euclidean distance measures can be calculated on the underlying data set. According to that, a clustering result as well as proximity scores between all data points have to be provided to be able to compute the Silhouette Score. 
+For a single data point, distances to all the data points assigned to the same cluster are calculated. Here, the mean of all these distances is called \textit{a}. After that, the nearest cluster for each data point has to be identified. This can be done by iteratively calculating the mean of distances between the single data point and all data points within another cluster until distances for all clusters have been computed. The minimum average distance determines the nearest cluster for the single data point. 
+The minimum average distance is called \textit{b} here. The Silhouette Score for data point \textit{i} is calculated using the following formula:
 \begin{align*}
 	s(i)=\frac{b - a}{max(a, b)}.
 \end{align*}
 The mean of all the Silhouette Scores for each individual data point determines the Silhouette Score for the whole data set. As the nearest cluster has to be found for each of the included data points, the Silhouette Score can only be computed as soon as more than one cluster exists \cite{rousseeuw1987silhouettes}.
-Taking a closer look at extreme cluster results determines how to interpret the Silhouette Score values. Given a partition where the mean intra-cluster distance \textit{a} is extremely low while the mean inter-cluster distance \textit{b} is high, the Silhouette Score would tend to be \mintinline[bgcolor=code-bg]{python}{1}. Hence, a Silhouette Score of \mintinline[bgcolor=code-bg]{python}{1} corresponds to a well-partitioned data set because the mean of distances between single points and other clusters than the one it is assigned to is large. Analogously, a value of \mintinline[bgcolor=code-bg]{python}{-1} corresponds to a partition where the inter-cluster distance \textit{b} is much larger than the intra-cluster distance \textit{a}. Thus, the data points are not assigned to their nearest clusters, resulting in a misclassification. If the Silhouette Score is equal to zero, means of inter- and intra-cluster distances are close to each other and it is unclear which cluster the point should be assigned to. In this case, the partition can also contain overlapping clusters \cite{rousseeuw1987silhouettes}.
-For the calculations of Silhouette Scores, we utilize the implementation provided from sklearn \cite{sklearn_api}.
-We make use of the Silhouette Score as it can be applied on cluster results generated with any clustering technique. It therefore provides an intuitive way of comparing the results of different algorithms to each other. One disadvantage is that Silhouette Scores are higher for convex clusters. As some density-based clustering algorithms, like Mean Shift or Spectral Clustering, explicitly allow the creation of non-convex clusters, the obtained Silhouette Scores could possibly be lower than results created applying other clustering techniques.
+Taking a closer look at extreme cluster results determines how to interpret the Silhouette Score values: Given a partition where the mean intra-cluster distance \textit{a} is extremely low while the mean inter-cluster distance \textit{b} is high, the Silhouette Score would tend to be \mintinline[bgcolor=code-bg]{python}{1}. Hence, a Silhouette Score of \mintinline[bgcolor=code-bg]{python}{1} corresponds to a well-partitioned data set because the mean of distances between single points and other clusters than the one it is assigned to is large. Analogously, a value of \mintinline[bgcolor=code-bg]{python}{-1} corresponds to a partition where the inter-cluster distance \textit{b} is much smaller than the intra-cluster distance \textit{a}. Thus, the data points are not assigned to their nearest clusters, resulting in a mis-classification. If the Silhouette Score is equal to zero, means of inter- and intra-cluster distances are close to each other and it is unclear which cluster the point should have been assigned to. In this case, the partition can also contain overlapping clusters \cite{rousseeuw1987silhouettes}.
+For the calculation of Silhouette Scores, we utilize the implementation provided by sklearn \cite{sklearn_api}.
+We decided to use of the Silhouette Score as it can be applied on cluster results generated with any clustering technique. It therefore provides an intuitive way of comparing the results of different algorithms to each other. In addition to that, Silhouette Scores are relatively easy to interpret, given that there is a maximum and a minimum score that can be reached. One disadvantage is that Silhouette Scores are higher for convex clusters. As some density-based clustering algorithms like Mean Shift or Spectral Clustering explicitly allow the creation of non-convex clusters, the obtained Silhouette Scores could possibly be lower than results created applying other clustering techniques.
 %\item Gap \cite{tibshirani2001estimating} brief explanation and reasons.
 
 \subsection{Results}
 
-In the following there is a discussion of the results of all clustering efforts in detail. A brief overview of the evaluation results can be found in table \ref{tab:evalutaion_table}. For each data set there is a row for each algorithm used. In columns are the results for each index. The cells represent the highest (lowest for \gls{DB} respectively) value achieved by applying various parameter configurations. It should be noted that comparing results across different methods does not show the entire picture but it can yield indications on performance. MORE WHEN RESULTS.
+In the following there is a discussion of the results of all clustering efforts in detail. A brief overview of the evaluation results can be found in table \ref{tab:evalutaion_table}. For each data set there is a row for each algorithm used. In columns are the results for each index. The cells represent the highest (lowest for \gls{DB} respectively) value achieved by applying various parameter configurations. It should be noted that comparing results across different methods does not show the entire picture but it can yield indications on performance.
 
 \begin{table}[H]
 \begin{center}
@@ -183,7 +183,7 @@ As mentioned in section \ref{sec:data_description} this data set originally come
 \textit{written by L.B.}\\ 
 
 In the following two plots, values for the chosen cluster validation indexes that evaluate the clustering result generated applying the Mean Shift algorithm on the Seeds data set for a range of bandwidth parameters are provided (Figure \ref{fig:mean_shift_seeds_indexes}).
-To determine suitable bandwidth parameter values, ideally SI, DI and CH should be maximized while DB should be at a minimum. 
+To determine suitable bandwidth parameter values, ideally \gls{SI}, \gls{DI} and \gls{CH} should be maximized while \gls{DB} should be at a minimum. 
 Reaching this goal is not that easy due to the way those scores are computed.
 \newline
 \begin{figure}[H]
@@ -193,7 +193,7 @@ Reaching this goal is not that easy due to the way those scores are computed.
 \caption{Cluster Validation Indexes: Means Shift on Seeds}
 \label{fig:mean_shift_seeds_indexes}
 \end{figure}
-Taking a look at DI, CH and DB, one might choose a bandwidth of 0.2 which indeed results in a very high number of small clusters and does not seem to represent a natural structure within the data set as can be seen in Figure \ref{fig:meanshift_seeds_clustering_tsne}.
+Taking a look at \gls{DI}, \gls{CH} and \gls{DB}, one might choose a bandwidth of 0.2 which indeed results in a very high number of small clusters and does not seem to represent a natural structure within the data set as can be seen in Figure \ref{fig:meanshift_seeds_clustering_tsne}.
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.5\textwidth]{images/Meanshift_Seeds_0_2.png}
@@ -201,11 +201,11 @@ Taking a look at DI, CH and DB, one might choose a bandwidth of 0.2 which indeed
     \label{fig:meanshift_seeds_clustering_tsne}
 \end{figure}
 
-Instead, a balance between high values for DI, SI, CH and a low value for DB is found for bandwidth values of 2 or 2.5 which results in two respectively three distinct clusters (Figure \ref{fig:meanshift_seeds_2_tsne}). 
+Instead, a balance between high values for \gls{DI}, \gls{SI}, \gls{CH} and a low value for \gls{DB} is found for bandwidth values of 2 or 2.5 which results in two respectively three distinct clusters (Figure \ref{fig:meanshift_seeds_2_tsne}). 
 \begin{figure}[H]
     \subfigure{\includegraphics[width=0.49\textwidth]{images/Meanshift_Seeds_2.png}}
     \subfigure{\includegraphics[width=0.49\textwidth]{images/Meanshift_Seeds_2_5.png}}
-    \caption{t-SNE projected result of Mean Shift with bandwidth = 2 (left) and bandwidth = 2.5 (right)w on Seeds data set}
+    \caption{t-SNE projected result of Mean Shift with bandwidth = 2 (left) and bandwidth = 2.5 (right) on Seeds data set}
     \label{fig:meanshift_seeds_2_tsne}
 \end{figure}
 
@@ -230,8 +230,7 @@ As the data set is labeled (see section \ref{sec:seeds_kmeans_evaluation}), a co
 	\label{fig:af_seeds2}
 \end{figure}
 
-On the seeds data set it performs good. And it finds some good cluster. Depending on the parameter more or less cluster are created which are shown \ref{fig:af_seeds78} and \ref{fig:af_seeds2}. In \ref{fig:af_seeds78} that input parameter is -78. It’s a very low compared to the parameter that are used in the other data sets. If this parameter gets lower, affinity propagation will create less cluster like in\ref{fig:af_seeds2}. In this figure the parameter is -247. If you compare the cluster validation metrics on these two plots, you can see that the second plot is better in all cluster validation metrics. If we look to other parameters, we don’t find new insights, the parameter -247 is quite optimal for this data set. 
-
+On the Seeds data set it performs good. And it finds some good clusters. Depending on the parameter, more or less clusters are created which are shown in Figure \ref{fig:af_seeds78} and Figure \ref{fig:af_seeds2}. In Figure \ref{fig:af_seeds78}, the input parameter is -78. It is very low compared to the parameter that are used for the other data sets. If this parameter gets lower, Affinity Propagation will create less clusters like in Figure \ref{fig:af_seeds2}. Here, the parameter is -247. If you compare the cluster validation metrics on these two plots, you can see that the second plot is better in all cluster validation metrics. If we look to other parameters, we do not find new insights, the parameter -247 is quite optimal for this data set. 
 \begin{table}[H]
 	\centering
 	\begin{tabular}{||c c c ||} 
@@ -248,11 +247,34 @@ On the seeds data set it performs good. And it finds some good cluster. Dependin
 	
 \end{table}
 
+\subsubsection{Seeds - Spectral Clustering}
+\textit{written by M.A.}
+
+Cluster validation indices are applied and compared to the respective datasets. The indices SI, DI, and CH are optimal when they reach the maximum. DB reaches the optimal value with a minimum. To compare the scores between different methods, the following line chart in Figure 13 is being analysed identifying the number of dimensions of the projection subspace for the Seeds data set. \newline
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{images/Spectral_Clustering_-_Seeds.pdf}
+    \caption{t-SNE projected result of Spectral Clustering with dimension = 2}
+    \label{fig:my_label}
+\end{figure}
+% \newline
+
+%Figure 1: Cluster validation indices by number of dimensions: Spectral Clustering on Seeds data set \newline
+
+At first glance, one can determine the maximum of CH, which is being reached at 3 dimensions. On the other hand, SI and DI suggest 2 dimensions, which can be derived through the maximum located at 2. Even DB, which shows the best result in its minimal value suggests 2 dimensions, since the line rises from that point on. Figure 2 shows the result of Spectral Clustering for dimension 2.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{images/k2.PNG}
+    \caption{t-SNE projected result of Spectral Clustering with dimension = 2}
+    \label{fig:my_label}
+\end{figure}
+
+
 \subsubsection{Mall Customers - K-Means}
 \textit{written by B.L.}\\
 \label{sec:mall_kmeans_evaluation}
-
-As one of the features is categorical (gender), this is not an ideal application of the K-Means clustering method. The categories can be resolved into discrete values so that calculations can be run, but the arbitrary nature of this does not really allow for good interpretation of the results. An exemplary three dimensional plot in Figure \ref{fig:kmeans_customers_3d} shows the issue: 
 
 \begin{wrapfigure}{r}{0.5\textwidth}
   \centering
@@ -260,6 +282,8 @@ As one of the features is categorical (gender), this is not an ideal application
   \caption{Split Data Due To {Categorical} Feature}
   \label{fig:kmeans_customers_3d}
 \end{wrapfigure}
+
+As one of the features is categorical (gender), this is not an ideal application of the K-Means clustering method. The categories can be resolved into discrete values so that calculations can be run, but the arbitrary nature of this does not really allow for good interpretation of the results. An exemplary three dimensional plot in Figure \ref{fig:kmeans_customers_3d} shows the issue: 
 
 gender is represented on the z-axis and the two manifestations simply rip the data into two partitions. When gender is encoded as 0 and 1, this showed almost no effect. When using 0 and 100, it leads to a doubling in the index-recommended number of clusters. One attempt to deal with this is to scale all data between 0 and 1 but this aggravated the problem instead of improving on it. Extensions of the K-Means method have been devised to deal with this type of data (as described in section \ref{subsec:method_kmeans}) but their application here seems beyond the scope of this work. Using the gender feature also does not improve scores in the evaluation methods used. Given these circumstances, considering plot \ref{fig:kmeans_customers_indices_plot} suggests considering the results for 2 (\gls{CH}, \gls{DB}, \gls{SI}), 7 (\gls{DB}) or 8 (\gls{CH}) clusters.
 
@@ -289,16 +313,16 @@ The data set contains four features, three of which have a measurable and interp
 
 The influence of different bandwidth parameter values for the application of Mean Shift on the Mall data set can be seen in Figure \ref{fig:meanshift_mall}.
 
-\begin{figure}[!ht]
+\begin{figure}[H]
 \begin{center}
 \includegraphics[width=0.8\textwidth]{images/Meanshift_-_Mall_Customers.pdf}
 \end{center}
 \caption{Cluster Validation Indexes: Mean Shift on Mall Customers}
 \label{fig:meanshift_mall}
 \end{figure}
-Again, as for the Seeds data set, ignoring SI and only trying to maximize DI and CH while minimizing DB, one might choose a bandwidth of 4.6. But again, this rather introduces artifacts than reflecting any natural structures (Figure \ref{fig:meanshift_mall_4_6}).
+Again, as for the Seeds data set, ignoring \gls{SI} and only trying to maximize \gls{DI} and \gls{CH} while minimizing \gls{DB}, one might choose a bandwidth of 4.6. But again, this rather introduces artifacts than reflecting any natural structures (Figure \ref{fig:meanshift_mall_4_6}).
 
-\begin{figure}[!ht]
+\begin{figure}[H]
 \begin{center}
 \includegraphics[width=0.5\textwidth]{images/Meanshift_Mall_4_6.png}
 \end{center}
@@ -320,7 +344,7 @@ When taking a look at the clustering result, there still are some data points wh
 \subsubsection{Mall Customers - Affinity Propagation}
 \textit{written by J.M.}\\
 
- \begin{figure}[!ht]
+ \begin{figure}[H]
  	\begin{center}
  		\includegraphics[width=0.5\textwidth]{images/af_mallcustomers2870.png}
  	\end{center}
@@ -336,7 +360,56 @@ When taking a look at the clustering result, there still are some data points wh
  		\label{fig:af_mall2}
  	\end{figure}
  
-On the customers data set it also performs good, but for this data set the parameter is smaller as for the seeds data set. In \ref{fig:af_mall1} it computed with -2870. Here you see that the Clustering is not good, there exists many clusters. To check if this algorithm works with this data set the parameter is change to a parameter where to clusters look good. This happened when the parameter is around 8778. This plot is in \ref{fig:af_mall2}. If you compare these two plots with the cluster validation indexes, it confirms the obvious the \ref{fig:af_mall2} is better. This parameter is also near to the optimum for this data set. 
+On the Mall Customers data set, Affinity Propagation also performs good, but for this data set the parameter is smaller as for the Seeds data set. In Figure \ref{fig:af_mall1} it computed with -2870. Here you see that the clustering is not good, there exist many clusters. To check if this algorithm works with this data set, the parameter is changed to a parameter value for which the clusters look good. This happened when the parameter is around -8778. This plot is in Figure \ref{fig:af_mall2}. If you compare these two plots with the cluster validation indexes, it confirms the obvious the Figure \ref{fig:af_mall2} is better. This parameter is also near to the optimum for this data set. 
+
+\subsubsection{Mall Customers - Spectral Clustering}
+\textit{written by M.A.}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{images/Spectral_Clustering_-_Mall_Customers.pdf}
+    \caption{Cluster validation indices by number of dimensions: Spectral Clustering on Mall Customers data set}
+    \label{fig:my_label2}
+\end{figure}
+
+ 
+ Figure 3 depicts the influence of the \verb|n_cluster| parameter for the Spectral Clustering algorithm on the Mall data set. Analysing the line chart the same way as before, it can be determined that CH suggests 8 dimensions, whereas SI, DI and DB suggest 5 as the optimal dimensions. As the t-SNE projected result of Spectral Clustering is being plotted, it is being proved that Spectral Clustering is well applicable on the Mall Customers dataset, since it generates the plots very fast and easily. \newline
+ 
+ 
+To decide which of these clusters is the optimal one, a plot for the dimension 5 and a plot for the dimension 8 is generated. Table 1 shows the plot1 with the dimension 5 and the plot 2 with the dimension 8. Comparing the cluster validation metrics of both plots, you can see that plot1 has better results regarding the maxima or rather minima (for DB). Even comparing to other parameters, there are not found better parameters than 5.\newline
+
+\hspace{-0.75cm}
+\resizebox{\textwidth}{!}{
+\begin{tabular}{lrrrr}
+ 
+ {}                            &  Calinski-Harabasz &  Davies-Bouldin &  Silhouette  &     Dunn \\ \hline 
+ Plot 1  with the parameter 5  &     149.1555       &    0.8049       &     0.4461   &     0.0802  \\
+ Plot 2   with the parameter 8 &     136.3805       &    1.0009       &     0.3510   &     0.0725 \\   \newline
+ 
+ \end {tabular} 
+} 
+\begin{table}[H]
+\caption{Comparison Cluster validation of Plot1 and Plot2 with Spectral Clustering}
+\label{tab:evalutaion_table_spectral}
+\end{table}
+ %Table 1: Comparison Cluster validation of Plot1 and Plot2 with Spectral Clustering \newline
+ 
+ \hspace{-0.25cm}
+ \includegraphics[width=0.5\textwidth]{images/5.PNG} 
+ \includegraphics[width=0.5\textwidth]{images/8.PNG} 
+ 
+ \begin{figure}[H]
+    \centering
+%     \includegraphics[width=0.5\textwidth]{images/5.PNG} 
+ %\includegraphics[width=0.5\textwidth]{images/8.PNG} 
+    \caption{t-SNE projected result of Spectral Clustering with dimension = 5 (left) and dimension=9 (right)}
+    \label{fig:my_label467}
+\end{figure}
+ %Figure 4:  t-SNE projected result of Spectral Clustering with dimension = 5 (left) and dimension=9 (right).
+ 
+ 
+
+
 
 \subsubsection{House Pricing - K-Means}
 \textit{written by B.L.}\\
@@ -376,7 +449,7 @@ Nevertheless, Mean Shift seems to be able to handle the data set and produces re
 \label{fig:meanshift_housing_indexes}
 \end{figure}
 
-In Figure \ref{fig:meanshift_housing_indexes} one can clearly see a maximum of DI, SI and CH and at the same time a minimum for DB in the range of 118 to 156 or between 159 and 185. All of the four chosen cluster validation indexes do not change for either of the values within the mentioned ranges. This is due to the large distance between data points of the red cluster and the remaining data points as it can be seen in Figure \ref{fig:meanshift_housing_120}.
+In Figure \ref{fig:meanshift_housing_indexes} one can clearly see a maximum of \gls{DI}, \gls{SI} and \gls{CH} and at the same time a minimum for \gls{DB} in the range of 118 to 156 or between 159 and 185. All of the four chosen cluster validation indexes do not change for either of the values within the mentioned ranges. This is due to the large distance between data points of the red cluster and the remaining data points as it can be seen in Figure \ref{fig:meanshift_housing_120}.
 
 \begin{figure}[H]
 \begin{center}
@@ -393,7 +466,7 @@ Furthermore, the data set consists of three relatively dense regions far away fr
 \subsubsection{House Pricing - Affinity Propagation}
 \textit{written by J.M.}\\
 
-On the house - pricing data set affinity propagation performs not good. It takes some time to find a good parameter for this data set. This is shown in  \ref{fig:af_house1}. The parameter for this plot wars -71433. This parameter is so low because this data set has the most dimensions. If you use a higher parameter the cluster is not so good. This is shown in \ref{fig:afhouse2}.   
+On the House Pricing data set, Affinity Propagation performs not good. It takes some time to find a good parameter for this data set. This is shown in Figure \ref{fig:af_house1}. The parameter for this plot was -71433. This parameter is so low because this data set has the most dimensions. If you use a higher parameter, the cluster is not so good. This is shown in Figure \ref{fig:afhouse2}.   
 
 \begin{figure}[H]
 		\begin{center}
@@ -411,10 +484,26 @@ On the house - pricing data set affinity propagation performs not good. It takes
 			\label{fig:afhouse2}
 		\end{figure}
 
+\subsubsection{House Pricing - Spectral Clustering}
+\textit{written by M.A.}\\
+
+The following Cluster validation indices how Spectral Clustering performed on the House Pricing data set. \newline
+ 
+  \includegraphics[width=1\textwidth]{images/Spectral_Clustering_-_Housing.pdf} \newline
+ Figure 5: Cluster validation indices by number of dimensions: Spectral Clustering on House Pricing data set.\newline
+ 
+ On the House Pricing data set, Spectral Clustering works good as well. The calculation to build the clusters is very fast. Figure depicts the plots of the clustering with the dimension 2,4 and 6. \newline
+ 
+\includegraphics[width=0.3\textwidth]{images/2.PNG} 
+\includegraphics[width=0.3\textwidth]{images/4.PNG} 
+\includegraphics[width=0.3\textwidth]{images/6.PNG} \newline
+  
+ Figure 6:  t-SNE projected result of Spectral Clustering with dimension 2,4 and 6 (from left to right). \newline
+
 \subsubsection{Wine Quality - K-Means}
 \textit{written by B.L.}\\
 
-%, the highest of all the data sets in this comparison
+
 The wine data set again presents a challenge due to its high feature count as well as having one discrete feature. Dimensionality reduction helps to speed up calculation but does not show an improvement in evaluation index performance. The plot of evaluation indices in Figure \ref{fig:kmeans_wine_indices_comparison} gives an indication for 2 (\gls{SI}, \gls{DB}), 3 (\gls{CH}), or 6 (\gls{CH}, \gls{DB}) clusters
 
 \begin{figure}[H]
@@ -449,6 +538,7 @@ Looking back at the PCA step mentioned before, the picture becomes clearer when 
 \label{fig:kmeans_wine_3d_multi}
 \end{figure}
 
+\newpage
 \vspace{-0.5cm}
 \begin{wrapfigure}{r}{0.5\textwidth}
   \centering
@@ -489,7 +579,7 @@ The cluster validation indexes suggest that a bandwidth parameter of 22.5 genera
 \subsubsection{Wine Quality - Affinity Propagation}
 \textit{written by J.M.}\\
 
-One the wine data set affinity propagation works not good. The calculation to build cluster needs significantly longer because this data set has more data points than the other data sets. After it computes the clusters it builds many clusters.  \ref{fig:af_wine1} show a plot of the clustering. There are many cluster in it. The parameter for this examples wars – 6264. It don’t work a good as the same reason as the house pricing data set, because the dimensions are very high. The Silhouette Index is also low, only 0.32. 
+On the Wine Data set, Affinity Propagation works not good. The calculation to build cluster needs significantly longer because this data set has more data points than the other data sets. After it computes the clusters it builds many clusters. Figure \ref{fig:af_wine1} shows a plot of the clustering. There are many clusters in it. The parameter for this example was –6264. It does not work good for the same reason as for the House Pricing data set, because the dimensions are very high. The Silhouette Score is also low, only 0.32. 
 
 \begin{figure}[H]
 	\begin{center}
@@ -498,3 +588,41 @@ One the wine data set affinity propagation works not good. The calculation to bu
 	\caption{t-SNE plot of Affinity Propagation on Wine Quality data set}
 	\label{fig:af_wine1}
 \end{figure}
+
+
+\subsubsection{Wine Quality - Spectral Clustering}
+\textit{written by M.A.}\\
+
+The following table contains the index scores for each of the indices selected as columns and another column with the Parameter k. The values represent the maxima for CH, SI and DI and the minima for DB applied on the Wine Quality data set.\newline  
+  
+
+
+\begin{tabular}{lrrrrr}
+
+
+
+{} &  Calinski-Harabasz &  Davies-Bouldin &  Silhouette &   Dunn &  Parameter k \\ \hline
+0 &           2257.866 &           0.679 &       0.534 &  0.004 &          2 \\
+1 &           2532.000 &           0.668 &       0.448 &  0.005 &          3 \\
+2 &           2523.090 &           0.710 &       0.404 &  0.005 &          4 \\
+3 &           2475.957 &           0.738 &       0.368 &  0.007 &          5 \\
+4 &           2616.132 &           0.793 &       0.360 &  0.006 &          6 \\
+5 &           2458.377 &           0.884 &       0.349 &  0.006 &          7 \\
+6 &           2286.404 &           0.887 &       0.322 &  0.004 &          8 \\ \newline
+
+
+\end{tabular}
+
+Table 2: Spectral Clustering Data Set Indices by Number of Clusters.  \newline
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{images/Spectral_Clustering_-_Wine_Quality.pdf}
+    \caption{Cluster validation indices by number of dimensions: Spectral Clustering on Wine quality data set}
+    \label{fig:my_label323}
+\end{figure}
+
+In the Table 4 compared with Table 2 one can identify which dimension is the optimal, since the best values are already deposited in Table 4, but without the number of dimensions.
+Analysing the table the maximal value for the Wine Quality data set with CH is being achieved with 6 clusters.\newline
+Since the DB searches for the highest value to be a good index, the best cluster is being reached with  3 clusters. The maximum of SI is being reached with 2 clusters. The maximum of DI is reached while comparing the Index through 5 clusters, when compared with the big table. \newline
+By the fact that, the Wine Quality data set is a big data set with many attributes and instances, it needed significantly longer than the other data sets. Nevertheless, the algorithm works correctly on the data set. \newline

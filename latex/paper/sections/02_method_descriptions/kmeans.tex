@@ -2,7 +2,7 @@
 \textit{written by B.L.}\\
 
 \label{subsec:method_kmeans}
-On the surface, the idea for K-Means clustering is straight forward: an initial grouping of observations closest to starting points whereafter the starting points are updated to be placed at the center of these groupings. A new grouping step is performed and centers updated until the groupings do not change any further \cite{wiedenbeck2001klassifikation, fahrmeir2015multivariate}. This very brief introduction requires elaboration.\\
+On the surface, the idea for K-Means clustering is straight forward: an initial grouping of observations closest to starting points, whereafter the starting points are updated to be placed at the center of these groupings. A new grouping step is performed and centers updated until the groupings do not change any further \cite{wiedenbeck2001klassifikation, fahrmeir2015multivariate}. This very brief introduction requires elaboration.\\
 
 One way to look at clustering mathematically is to consider an objective function, similar to \cite{wu2012advances}
 \begin{equation}
@@ -38,7 +38,7 @@ For every observation (row in the data) there is a centroid with the lowest dist
 \If {observations have labels}
 \State update centroids $c_{i}$ to center of current clusters $C_{i}$ \circled{3}
 \EndIf
-\State calculate all distances $d_{n, k_{i}}$ \circled{2}
+\State calculate all distances $d_{m, c_{i}}$ \circled{2}
 \State assign each observation to min distant centroid via label $i$
 \EndWhile
 \end{algorithmic}
