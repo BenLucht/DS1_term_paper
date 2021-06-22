@@ -58,15 +58,22 @@ Due to its construction (distance measure), this index performs well when cluste
 The Davies-Bouldin index is a metric to evaluate clustering algorithms and it was developed by David Davies and Donald Bouldin in 1979 \cite{davies1979cluster}. 
 It is used to check the validity of clusters. To reach this, the Davies-Bouldin Index tries to maximize the inter-cluster distance 
 and on the other side tries to minimize the intra-cluster distance. 
-The Davies-Bouldin index is defined as 
-	
-$ \bar{R} \equiv \frac{1}{N} \sum_{i=1}^{N} R_i  $ \\
-where N is the number of clusters and $R_i$ is the maximum of $R_{ij}$ where i$\neq$j \\
-	
-$R_{ij} \equiv \frac{S_i+ S_j}{M_{ij}}$ \\
-where $M_{ij}$ is the Minkowski metric which can be described as: \\ $M_{ij} = \{ \sum_{k=1}^{N} |a_{ki} - a_{kj}  |^p    \} ^{  \frac{1}{p}}   $ 	
-	
-$S_{ij} = \{\frac{1}{T_i} \sum_{j=1}^{T_i} |X_{j} - A_{i}  |^q    \}^\frac{1}{q}$ \\
+The Davies-Bouldin index is defined as \cite{davies1979cluster} 
+
+\begin{equation}
+	\bar{R} \equiv \frac{1}{N} \sum_{i=1}^{N} R_i  
+\end{equation}
+where N is the number of cluster and $R_i$ is the maximum of $R_{ij}$ where i$\neq$j 
+\begin{equation}
+	R_{ij} \equiv \frac{S_i+ S_j}{M_{ij}} \\
+\end{equation}
+where $M_{ij}$ is the Minkowski metric which can be descibes as: 
+\begin{equation}	
+	M_{ij} = \{ \sum_{k=1}^{N} |a_{ki} - a_{kj}  |^p    \} ^{  \frac{1}{p}}    	
+\end{equation}
+\begin{equation}
+	S_{ij} = \{\frac{1}{T_i} \sum_{j=1}^{T_i} |X_{j} - A_{i}  |^q    \}^\frac{1}{q} 
+\end{equation}
 	
 If q =1 	$S_{ij}$ is the Euclidean distance between centroids.  \\
   
